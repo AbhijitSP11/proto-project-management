@@ -14,8 +14,6 @@ const Navbar = () => {
 
   const {data: currentUser}  = useGetAuthUserQuery({});
 
-  if(!currentUser) return null;
-
   const handleSignOut =  async () => {
     try{
       await signOut();
@@ -23,6 +21,8 @@ const Navbar = () => {
       console.error("Error signing out", error);  
     }
   };
+
+  if(!currentUser) return null;
 
   const currentUserDetails = currentUser?.userDetails;
 
