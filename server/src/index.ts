@@ -23,7 +23,14 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors());
+
+app.use(cors({
+  origin: process.env.CLIENT_ORIGIN || '*', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+}));
+
 
 /* ROUTES */
 app.get("/", (req, res) => {
@@ -35,11 +42,16 @@ app.use("/tasks", taskRoutes);
 app.use("/users", userRoutes);
 app.use("/search", searchRoutes);
 app.use("/teams", teamRouter);
-app.use("/create-user", userRoutes);
+app.use("/create-user", cors(), userRoutes)
 
 /* SERVER */
 const port = Number(process.env.PORT) || 3000;
 
 app.listen(port, "0.0.0.0", () => {
   console.log(`Server running on part ${port}`);
+});
+
+process.on('SIGINT', async () => {
+  await prisma.$disconnect();
+  process.exit(0);
 });
