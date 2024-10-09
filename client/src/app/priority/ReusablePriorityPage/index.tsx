@@ -3,6 +3,8 @@
 import { useAppSelector } from "@/app/redux";
 import Header from "@/components/Header";
 import ModalNewTask from "@/components/ModalNewTask";
+import TaskBoard from "@/components/TaskTable";
+
 import {
   Priority,
   Task,
@@ -12,7 +14,6 @@ import {
 import { dataGridClassNames, dataGridSxStyles } from "@/utils/dataGridClassNames.utils";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import React, { useState } from "react";
-import TaskTable from "@/components/TaskTable";
 
 type Props = {
   priority: Priority;
@@ -133,9 +134,9 @@ const ReusablePriorityPage = ({ priority }: Props) => {
       {isLoading ? (
         <div>Loading tasks...</div>
       ) : view === "list" ? (
-        <div className="grid grid-cols-1 gap-4">
-          <TaskTable tasks={tasks}/>
-        </div>
+       <div>
+        <TaskBoard tasks={tasks}/>
+       </div>
       ) : (
         view === "table" &&
         filteredTasks && (
