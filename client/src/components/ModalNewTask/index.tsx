@@ -18,7 +18,7 @@ import { PRIORITY_STYLES } from "@/constants/constants";
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  id: string;
+  id?: string | null;
 }
 
 const priorityOptions = [
@@ -26,7 +26,7 @@ const priorityOptions = [
   { value: Priority.High, label: "High" },
   { value: Priority.Medium, label: "Medium" },
   { value: Priority.Low, label: "Low" },
-  { value: Priority.Bakclog, label: "Backlog" },
+  { value: Priority.Backlog, label: "Backlog" },
 ];
 
 
@@ -81,7 +81,7 @@ const PrioritySingleValue = (props: any) => (
   </components.SingleValue>
 );
 
-const ModalNewTask: React.FC<Props> = ({ isOpen, onClose, id }) => {
+const ModalNewTask: React.FC<Props> = ({ isOpen, onClose, id = null  }) => {
 
   const [createTask, {isLoading}] = useCreateTasksMutation();
   const {data: users} = useGetUsersQuery();

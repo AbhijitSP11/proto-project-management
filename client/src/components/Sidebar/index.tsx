@@ -100,7 +100,7 @@ const Sidebar = () => {
             </div>
             {/*Team*/}
             <div className='flex items-center gap-5 border-y-[1.5px] border-gray-100'>
-                <Image src={"/logo.png"} alt='logo' width={80} height={80} className='rounded-lg p-2'/>
+                <Image src={"https://proto-pm-s3-images.s3.ap-south-1.amazonaws.com/logo.png"} alt='logo' width={80} height={80} className='rounded-lg p-2'/>
                 <div>
                     <h3 className='text-md font-bold tracking-wide dark:text-white'></h3>
                     <div className='mt-1 flex items-center gap-2'>
