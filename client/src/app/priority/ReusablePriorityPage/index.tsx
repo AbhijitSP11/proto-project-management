@@ -6,6 +6,7 @@ import ModalNewTask from "@/components/ModalNewTask";
 import {
   Priority,
   Task,
+  useGetAuthUserQuery,
   useGetTasksByUserQuery,
 } from "@/state/api";
 import { dataGridClassNames, dataGridSxStyles } from "@/utils/dataGridClassNames.utils";
