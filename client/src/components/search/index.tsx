@@ -55,10 +55,10 @@ const Search = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="w-full p-4">
       <button 
         onClick={() => setIsOpen(true)}
-        className="w-full max-w-3xl mx-auto px-4 py-2 text-left text-gray-500 border rounded-lg shadow hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+        className="w-full mx-auto px-4 py-2 text-left text-gray-500 border rounded-lg shadow hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
       >
         Global search...
       </button>
@@ -68,8 +68,7 @@ const Search = () => {
           <div className="space-y-4 p-4 md:p-6">
             <Input 
               placeholder="Global search..." 
-              className="w-full text-lg"
-              autoFocus
+              className="w-full text-lg focus:outline-none focus:border-none"
               onChange={(e) => handleSearch(e.target.value)}
             />
             
@@ -78,7 +77,7 @@ const Search = () => {
                 <button
                   key={category.id}
                   onClick={() => setActiveCategory(category.id)}
-                  className={`flex items-center space-x-1 rounded-full px-3 py-1.5 text-sm transition-colors ${
+                  className={`flex items-center space-x-1 rounded-md px-3 py-1.5 text-sm transition-colors ${
                     activeCategory === category.id 
                       ? 'bg-black text-white' 
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'

@@ -133,13 +133,12 @@ const HomePage = () => {
         </div>
         <div className="rounded-lg bg-white p-4 shadow dark:bg-dark-secondary md:col-span-2">
           <h3 className="mb-4 text-lg font-semibold dark:text-white">
-            Your Tasks
+            Tasks assigned to me
           </h3>
           <div style={{ height: 400, width: "100%" }}>
             <DataGrid
               rows={tasks}
               columns={taskColumns}
-              checkboxSelection
               loading={tasksLoading}
               getRowClassName={() => "data-grid-row"}
               getCellClassName={() => "data-grid-cell"}
