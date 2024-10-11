@@ -77,38 +77,41 @@ export interface SearchResults {
 
 export const api = createApi({
     baseQuery: fetchBaseQuery({
-        baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL, 
-        prepareHeaders: async (headers) => {
-            const session = await fetchAuthSession();
-            const {accessToken} = session.tokens ?? {};
-            if(accessToken){
-                headers.set("Authorization", `Bearer ${accessToken}`);
-            };
-            return headers;
+      baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
+      prepareHeaders: async (headers) => {
+        const session = await fetchAuthSession();
+        const { accessToken } = session.tokens ?? {};
+        if (accessToken) {
+          headers.set("Authorization", `Bearer ${accessToken}`);
         }
-    }), 
-    reducerPath: "api", 
-    tagTypes: ["Projects", "Tasks", "Users", "Teams"], 
+        return headers;
+      },
+    }),
+    reducerPath: "api",
+    tagTypes: ["Projects", "Tasks", "Users", "Teams"],
     endpoints: (build) => ({
-        getAuthUser: build.query({
-            queryFn: async(_, _queryApi, _extraoptions, fetchWithBQ) => {
-                try {
-                    const user = await getCurrentUser();
-                    const session = await fetchAuthSession();
-                    if(!session) throw new Error("Session not found");
-                    const {userSub} = session;
-                    const {accessToken} = session.tokens ?? {};
+      getAuthUser: build.query({
+        queryFn: async (_, _queryApi, _extraoptions, fetchWithBQ) => {
+          try {
+            const user = await getCurrentUser();
+            const session = await fetchAuthSession();
+            if (!session) throw new Error("No session found");
+            const { userSub } = session;
+            console.log("userSub", userSub);
 
-                    const userDetailsResponse = await fetchWithBQ(`users/${userSub}`);
-                    const userDetails = userDetailsResponse.data as User;
-
-                    return {data: {user, userSub, userDetails}}
-                }
-                catch (error: any){
-                    return {error: error.message || "Error retriving user data"} 
-                }
-            }
-        }),
+            const { accessToken } = session.tokens ?? {};
+  
+            const userDetailsResponse = await fetchWithBQ(`users/${userSub}`);
+            console.log("userDetailsResponse", userDetailsResponse);
+            const userDetails = userDetailsResponse.data as User;
+            console.log("userDetails", userDetails);
+  
+            return { data: { user, userSub, userDetails } };
+          } catch (error: any) {
+            return { error: error.message || "Could not fetch user data" };
+          }
+        },
+      }),
         getProjects: build.query<Project[], void>({
             query: ()=> "projects", 
             providesTags: ["Projects"],

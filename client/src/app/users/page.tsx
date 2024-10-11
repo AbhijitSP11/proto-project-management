@@ -12,6 +12,7 @@ import {
 } from "@mui/x-data-grid";
 import Image from "next/image";
 import { dataGridClassNames, dataGridSxStyles } from "@/utils/dataGridClassNames.utils";
+import { useTheme } from "next-themes";
 
 const columns: GridColDef[] = [
   { field: "userId", headerName: "ID", width: 100 },
@@ -38,7 +39,8 @@ const columns: GridColDef[] = [
 
 const Users = () => {
   const { data: users, isLoading, isError } = useGetUsersQuery();
-  const isDarkMode = useAppSelector((state) => state.global.isDarkMode);
+  const { theme } = useTheme();
+  const isDarkMode = theme === "dark";
 
   if (isLoading) return <div>Loading...</div>;
   if (isError || !users) return <div>Error fetching users</div>;

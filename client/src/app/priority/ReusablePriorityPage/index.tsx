@@ -1,6 +1,5 @@
 "use client";
 
-import { useAppSelector } from "@/app/redux";
 import Header from "@/components/Header";
 import ModalNewTask from "@/components/ModalNewTask";
 import TaskBoard from "@/components/TaskTable";
@@ -13,6 +12,7 @@ import {
 } from "@/state/api";
 import { dataGridClassNames, dataGridSxStyles } from "@/utils/dataGridClassNames.utils";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { useTheme } from "next-themes";
 import React, { useState } from "react";
 
 type Props = {
@@ -75,11 +75,16 @@ const columns: GridColDef[] = [
 ];
 
 const ReusablePriorityPage = ({ priority }: Props) => {
+  const { theme } = useTheme();
+
   const [view, setView] = useState("list");
   const [isModalNewTaskOpen, setIsModalNewTaskOpen] = useState(false);
 
   const { data: currentUser } = useGetAuthUserQuery({});
-  const userId = currentUser?.userDetails?.userId ?? null;
+  const userId = currentUser?.userDetails?.userId ?? 1;
+  console.log("userId", userId)
+  console.log("currentUser", currentUser)
+  
   const {
     data: tasks,
     isLoading,
@@ -88,7 +93,7 @@ const ReusablePriorityPage = ({ priority }: Props) => {
     skip: userId === null,
   });
 
-  const isDarkMode = useAppSelector((state) => state.global.isDarkMode);
+  const isDarkMode = theme === "dark";
 
   const filteredTasks = tasks?.filter(
     (task: Task) => task.priority === priority,

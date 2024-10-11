@@ -19,7 +19,8 @@ interface ViewModeOption {
 type TaskTypeItems = "task" | "milestone" | "project";
 
 const Timeline = ({id, setIsModalNewTaskOpen}: Props) => {
-    const isDarkMode = useAppSelector((state)=> state.global.isDarkMode);
+    const { theme } = useTheme();
+    const isDarkMode = theme === "dark";
     const {
         data: tasks, 
         isLoading, 

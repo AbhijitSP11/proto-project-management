@@ -26,6 +26,7 @@ import {
 } from "recharts";
 import { dataGridClassNames, dataGridSxStyles } from "@/utils/dataGridClassNames.utils";
 import { COLORS, taskColumns } from "@/constants/constants";
+import { useTheme } from "next-themes";
 
 const HomePage = () => {
   const {
@@ -36,7 +37,8 @@ const HomePage = () => {
   const { data: projects, isLoading: isProjectsLoading } =
     useGetProjectsQuery();
 
-  const isDarkMode = useAppSelector((state) => state.global.isDarkMode);
+    const { theme } = useTheme();
+    const isDarkMode = theme === "dark";
 
   if (tasksLoading || isProjectsLoading) return <div>Loading..</div>;
   if (tasksError || !tasks || !projects) return <div>Error fetching data</div>;

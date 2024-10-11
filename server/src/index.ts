@@ -42,7 +42,6 @@ app.use("/tasks", taskRoutes);
 app.use("/users", userRoutes);
 app.use("/search", searchRoutes);
 app.use("/teams", teamRouter);
-app.use("/create-user", cors(), userRoutes)
 
 /* SERVER */
 const port = Number(process.env.PORT) || 3000;

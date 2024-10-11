@@ -4,6 +4,7 @@ import React, { useMemo, useState } from 'react'
 import {DisplayOption, Gantt, ViewMode} from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
 import Select from 'react-select';
+import { useTheme } from 'next-themes';
 
 type Props = {
     id: string;
@@ -18,7 +19,8 @@ interface ViewModeOption {
 type TaskTypeItems = "task" | "milestone" | "project";
 
 const Timeline = ({id, setIsModalNewTaskOpen}: Props) => {
-    const isDarkMode = useAppSelector((state)=> state.global.isDarkMode);
+    const { theme } = useTheme();
+    const isDarkMode = theme === "dark";
     const {
         data: tasks, 
         isLoading, 

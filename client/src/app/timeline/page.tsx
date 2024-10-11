@@ -7,6 +7,7 @@ import {DisplayOption, Gantt, ViewMode} from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
 import Select from 'react-select';
 import Header from '@/components/Header';
+import { useTheme } from 'next-themes';
 
 interface ViewModeOption {
     value: ViewMode;
@@ -16,7 +17,8 @@ interface ViewModeOption {
 type TaskTypeItems = "task" | "milestone" | "project";
 
 const Timeline = () => {
-    const isDarkMode = useAppSelector((state)=> state.global.isDarkMode);
+    const { theme } = useTheme();
+    const isDarkMode = theme === "dark";
     const {data: projects, isLoading, isError } = useGetProjectsQuery();
     
     const [displayOptions, setDisplayOptions] = useState<DisplayOption>({

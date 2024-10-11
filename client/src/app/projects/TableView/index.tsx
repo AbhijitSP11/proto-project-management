@@ -6,6 +6,7 @@ import { useAppSelector } from '@/app/redux';
 import { PRIORITY_STYLES, STATUS_STYLES } from '@/constants/constants';
 import { getInitials } from '@/utils/getInitials.utils';
 import { getColorForName } from '@/utils/getProfileColor.utils';
+import { useTheme } from "next-themes";
 
 type Props = {
     id: string;
@@ -13,7 +14,8 @@ type Props = {
 };
 
 const TableView: React.FC<Props> = ({ id, setIsModalNewTaskOpen }) => {
-    const isDarkMode = useAppSelector((state) => state.global.isDarkMode);
+    const { theme } = useTheme();
+    const isDarkMode = theme === "dark";
     
     const columns: GridColDef[] = [
         {
