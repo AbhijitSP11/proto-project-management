@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 import { fetchAuthSession, getCurrentUser } from 'aws-amplify/auth';
-import { error } from 'console';
+import { addMessageToChat } from './chatSlice';
 
 export interface Project{
     id: number;
@@ -73,7 +73,15 @@ export interface SearchResults {
     tasks?: Task[];
     projects?:Project[], 
     users?:User[]
-}
+};
+
+export interface ChatRequest {
+  message: string;
+};
+
+export interface ChatResponse {
+  response: string;
+};
 
 export const api = createApi({
     baseQuery: fetchBaseQuery({
@@ -162,6 +170,21 @@ export const api = createApi({
                 ? result.map(({ id }) => ({ type: "Tasks", id }))
                 : [{ type: "Tasks", id: userId }],
           }),
+          groqChat: build.mutation<ChatResponse, ChatRequest>({
+            query: (chatRequest) => ({
+              url: '/groq/chat',
+              method: 'POST',
+              body: chatRequest,
+            }),
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+              try {
+                const { data } = await queryFulfilled;
+                dispatch(addMessageToChat({ role: 'bot', content: data.response }));
+              } catch (error) {
+                console.log("error")
+              }
+            },
+          })
     }),
 });
 
@@ -175,5 +198,6 @@ export const {
     useSearchQuery, 
     useGetTeamsQuery, 
     useGetTasksByUserQuery, 
-    useGetAuthUserQuery
+    useGetAuthUserQuery, 
+    useGroqChatMutation,
 } = api;

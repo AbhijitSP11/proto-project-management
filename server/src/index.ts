@@ -10,6 +10,7 @@ import taskRoutes from "./routes/taskRoutes";
 import userRoutes from "./routes/userRoutes";
 import searchRoutes from "./routes/searchRoutes";
 import teamRouter from "./routes/teamRoutes";
+import groqRoutes from "./routes/groqRoutes";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -42,6 +43,7 @@ app.use("/tasks", taskRoutes);
 app.use("/users", userRoutes);
 app.use("/search", searchRoutes);
 app.use("/teams", teamRouter);
+app.use("/groq", groqRoutes);
 
 /* SERVER */
 const port = Number(process.env.PORT) || 3000;

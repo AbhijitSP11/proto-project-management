@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import StoreProvider, { useAppSelector } from "./redux";
 import AuthProvider from "./authProvider";
 import ClientProvider from "./ClientProvider";
-import { useTheme } from "next-themes";
+import ChatBot from "@/components/chatbot";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const isSidebarCollapsed = useAppSelector(
@@ -14,7 +14,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   );
 
   return (
-    <div className="flex min-h-screen w-full bg-gray-50 text-gray-900 dark:bg-dark-bg dark:text-gray-100">
+    <div className="relative flex min-h-screen w-full bg-gray-50 text-gray-900 dark:bg-dark-bg dark:text-gray-100">
     <Sidebar />
     <main
       className={`flex w-full flex-col transition-all duration-300 ${
@@ -28,6 +28,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       </div>
       <div className="flex-1 overflow-auto mt-16 p-4"> 
         {children}
+      </div>
+      <div className="w-full">
+        <ChatBot />
       </div>
     </main>
   </div>

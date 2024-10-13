@@ -21,11 +21,6 @@ const SIDEBAR_LINKS: ISidebarLinkProps[] = [
         label: "Timeline"
     },
     {
-        href: "/search", 
-        icon: Search, 
-        label: "Search"
-    },
-    {
         href: "/settings", 
         icon: Settings, 
         label: "Settings"
