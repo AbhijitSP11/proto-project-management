@@ -2,6 +2,7 @@ import Modal from "@/components/Modal";
 import { useCreateProjectMutation } from "@/state/api";
 import React, { useState } from "react";
 import { formatISO } from "date-fns";
+import Spinner from "@/components/UI/spinner";
 
 type Props = {
   isOpen: boolean;
@@ -83,7 +84,12 @@ const ModalNewProject = ({ isOpen, onClose }: Props) => {
           }`}
           disabled={!isFormValid() || isLoading}
         >
-          {isLoading ? "Creating..." : "Create Project"}
+          {isLoading ? (
+            <div className="flex items-center gap-2">
+              <Spinner/> 
+              <p>Creating...</p>
+            </div> 
+            )  : "Create Project"}
         </button>
       </form>
     </Modal>

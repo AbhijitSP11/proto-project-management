@@ -2,6 +2,7 @@ import React from 'react'
 import Header from '@/components/Header';
 import { Task, useGetTasksQuery } from '@/state/api';
 import TaskTable from '@/components/TaskTable';
+import Spinner from '@/components/UI/spinner';
 
 type Props = {
     id: string;
@@ -15,7 +16,7 @@ const ListView = ({id, setIsModalNewTaskOpen}: Props) => {
         error
     } = useGetTasksQuery({projectId: Number(id)});
     
-    if(isLoading) return <div>Loading..</div>
+    if(isLoading) return <div><Spinner/></div>
     if(error) return <div>An error occured while fetching tasks</div>
     
     return (

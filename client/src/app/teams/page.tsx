@@ -9,6 +9,7 @@ import {
 } from "@mui/x-data-grid";
 import { dataGridClassNames, dataGridSxStyles } from "@/utils/dataGridClassNames.utils";
 import { useTheme } from "next-themes";
+import Spinner from "@/components/UI/spinner";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "Team ID", width: 100 },
@@ -26,7 +27,7 @@ const Teams = () => {
   const { theme } = useTheme();
     const isDarkMode = theme === "dark";
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div> <Spinner/> </div>;
   if (isError || !teams) return <div>Error fetching teams</div>;
 
   return (

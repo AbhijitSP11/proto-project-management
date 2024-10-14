@@ -5,6 +5,8 @@ import "gantt-task-react/dist/index.css";
 import Select from 'react-select';
 import { useAppSelector } from '@/app/redux';
 import { useGetTasksQuery } from '@/state/api';
+import Spinner from '@/components/UI/spinner';
+import { useTheme } from 'next-themes';
 
 type Props = {
     id: string;
@@ -53,7 +55,7 @@ const Timeline = ({id, setIsModalNewTaskOpen}: Props) => {
         }
     };
     
-    if(isLoading) return <div>Loading..</div>
+    if(isLoading) return <div> <Spinner/> </div>
     if(error) return <div>An error occured while fetching tasks</div>
 
     const options: ViewModeOption[] = [

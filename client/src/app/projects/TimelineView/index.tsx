@@ -5,6 +5,7 @@ import {DisplayOption, Gantt, ViewMode} from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
 import Select from 'react-select';
 import { useTheme } from 'next-themes';
+import Spinner from '@/components/UI/spinner';
 
 type Props = {
     id: string;
@@ -53,7 +54,7 @@ const Timeline = ({id, setIsModalNewTaskOpen}: Props) => {
         }
     };
     
-    if(isLoading) return <div>Loading..</div>
+    if(isLoading) return <div> <Spinner/> </div>
     if(error) return <div>An error occured while fetching tasks</div>
 
     const options: ViewModeOption[] = [

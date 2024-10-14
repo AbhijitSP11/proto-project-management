@@ -8,6 +8,7 @@ import "gantt-task-react/dist/index.css";
 import Select from 'react-select';
 import Header from '@/components/Header';
 import { useTheme } from 'next-themes';
+import Spinner from '@/components/UI/spinner';
 
 interface ViewModeOption {
     value: ViewMode;
@@ -48,7 +49,7 @@ const Timeline = () => {
         }
     };
     
-    if(isLoading) return <div>Loading..</div>
+    if(isLoading) return <div> <Spinner/> </div>
     if(isError || !projects) return <div>An error occured while fetching tasks</div>
 
     const options: ViewModeOption[] = [

@@ -3,12 +3,13 @@
 import { useSearchQuery } from "@/state/api";
 import React, { useEffect, useState } from "react";
 import { debounce } from "lodash";
-import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
+import { Dialog, DialogContent } from '@/components/UI/dialog';
+import { Input } from '@/components/UI/input';
 import { Globe, Users, CheckSquare, AlertCircle, FolderKanban } from 'lucide-react';
 import TaskTable from "@/components/TaskTable";
 import ProjectCard from "@/components/ProjectCard";
 import UserCard from "@/components/UserCard";
+import Spinner from "../UI/spinner";
 
 type SearchCategory = 'All' | 'Project' | 'Team' | 'User' | 'Task' | 'Priority';
 
@@ -92,7 +93,10 @@ const Search = () => {
             <div className="space-y-4 max-h-[60vh] overflow-y-auto">
               {isLoading && (
                 <div className="flex justify-center py-8">
-                  <p className="text-gray-500">Loading results...</p>
+                  <p className="flex gap-2 items-center text-gray-500">
+                    <Spinner/> 
+                    Loading results...
+                  </p>
                 </div>
               )}
               

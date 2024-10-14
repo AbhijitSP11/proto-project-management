@@ -3,6 +3,7 @@
 import Header from "@/components/Header";
 import ModalNewTask from "@/components/ModalNewTask";
 import TaskBoard from "@/components/TaskTable";
+import Spinner from "@/components/UI/spinner";
 
 import {
   Priority,
@@ -137,7 +138,7 @@ const ReusablePriorityPage = ({ priority }: Props) => {
         </button>
       </div>
       {isLoading ? (
-        <div>Loading tasks...</div>
+        <div><Spinner/></div>
       ) : view === "list" ? (
        <div>
         <TaskBoard tasks={tasks}/>

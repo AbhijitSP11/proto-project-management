@@ -7,6 +7,7 @@ import { PRIORITY_STYLES, STATUS_STYLES } from '@/constants/constants';
 import { getInitials } from '@/utils/getInitials.utils';
 import { getColorForName } from '@/utils/getProfileColor.utils';
 import { useTheme } from "next-themes";
+import Spinner from '@/components/UI/spinner';
 
 type Props = {
     id: string;
@@ -124,7 +125,7 @@ const TableView: React.FC<Props> = ({ id, setIsModalNewTaskOpen }) => {
         error
     } = useGetTasksQuery({ projectId: Number(id) });
 
-    if (isLoading) return <div className="flex justify-center items-center h-[540px]">Loading...</div>;
+    if (isLoading) return <div className="flex justify-center items-center h-[540px]"> <Spinner/> </div>;
     if (error) return <div className="flex justify-center items-center h-[540px] text-red-500">An error occurred while fetching tasks</div>;
 
     const customDataGridStyles = {

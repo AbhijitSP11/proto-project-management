@@ -27,6 +27,7 @@ import {
 import { dataGridClassNames, dataGridSxStyles } from "@/utils/dataGridClassNames.utils";
 import { COLORS, taskColumns } from "@/constants/constants";
 import { useTheme } from "next-themes";
+import Spinner from "@/components/UI/spinner";
 
 const HomePage = () => {
   const {
@@ -40,7 +41,7 @@ const HomePage = () => {
     const { theme } = useTheme();
     const isDarkMode = theme === "dark";
 
-  if (tasksLoading || isProjectsLoading) return <div>Loading..</div>;
+  if (tasksLoading || isProjectsLoading) return <div><Spinner/></div>;
   if (tasksError || !tasks || !projects) return <div>Error fetching data</div>;
 
   const priorityCount = tasks.reduce(

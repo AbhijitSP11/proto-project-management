@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send, Home, ChevronLeft, CheckSquare, PlusCircle, BarChart2, Sparkles } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { Input } from '@/components/UI/input';
+import { Button } from '@/components/UI/button';
 import { useTheme } from 'next-themes';
 import { useGroqChatMutation } from '@/state/api';
 import { useAppDispatch, useAppSelector } from '@/app/redux';

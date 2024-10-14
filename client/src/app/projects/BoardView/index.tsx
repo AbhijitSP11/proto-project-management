@@ -6,6 +6,7 @@ import {Task as TaskType} from "@/state/api"
 import { EllipsisVertical, MessageSquareMore, Plus } from 'lucide-react';
 import {format} from "date-fns"; 
 import Image from 'next/image';
+import Spinner from '@/components/UI/spinner';
 
 type BoardProps = {
     id: string;
@@ -27,7 +28,7 @@ const BoardView = ({id, setIsModalNewTaskOpen}: BoardProps) => {
         updateTaskStatus({taskId, status: toStatus})
     };
 
-    if(isLoading) return <div>Loading..</div>
+    if(isLoading) return <div><Spinner/></div>
     if(error) return <div>An error occured while fetching tasks</div>
 
     return (
@@ -99,9 +100,6 @@ const TaskColumn = ({
                 </span>
               </h3>
               <div className="flex items-center gap-1">
-                <button className="flex h-6 w-5 items-center justify-center dark:text-neutral-500">
-                <EllipsisVertical size={26} />
-                </button>
                 <button
                 className="flex h-6 w-6 items-center justify-center rounded bg-gray-200 dark:bg-dark-tertiary dark:text-white"
                 onClick={() => setIsModalNewTaskOpen(true)}
@@ -111,11 +109,13 @@ const TaskColumn = ({
             </div>
             </div>
           </div>
-          {tasks
-            .filter((task) => task.status === status)
-            .map((task) => (
-              <Task key={task.id} task={task} />
-            ))}
+          <div className='bg-gray-100 p-4 rounded-lg'>
+            {tasks
+              .filter((task) => task.status === status)
+              .map((task) => (
+                <Task key={task.id} task={task} />
+              ))}
+          </div>
         </div>
       );
     };
