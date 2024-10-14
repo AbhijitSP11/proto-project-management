@@ -13,8 +13,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/UI/dropdown-menu";
-import { Button } from "@/components/UI/button";
+} from "@/UI/dropdown-menu";
+import { Button } from "@/UI/button";
 
 const Navbar = () => {
   const { setTheme } = useTheme()

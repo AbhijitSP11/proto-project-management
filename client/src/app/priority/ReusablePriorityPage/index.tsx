@@ -3,7 +3,7 @@
 import Header from "@/components/Header";
 import ModalNewTask from "@/components/ModalNewTask";
 import TaskBoard from "@/components/TaskTable";
-import Spinner from "@/components/UI/spinner";
+import Spinner from "@/UI/spinner";
 
 import {
   Priority,

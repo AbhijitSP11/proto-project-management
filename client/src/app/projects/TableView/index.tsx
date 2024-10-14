@@ -7,7 +7,7 @@ import { PRIORITY_STYLES, STATUS_STYLES } from '@/constants/constants';
 import { getInitials } from '@/utils/getInitials.utils';
 import { getColorForName } from '@/utils/getProfileColor.utils';
 import { useTheme } from "next-themes";
-import Spinner from '@/components/UI/spinner';
+import Spinner from '@/UI/spinner';
 
 type Props = {
     id: string;

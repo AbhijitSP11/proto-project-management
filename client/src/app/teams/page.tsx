@@ -9,7 +9,7 @@ import {
 } from "@mui/x-data-grid";
 import { dataGridClassNames, dataGridSxStyles } from "@/utils/dataGridClassNames.utils";
 import { useTheme } from "next-themes";
-import Spinner from "@/components/UI/spinner";
+import Spinner from "@/UI/spinner";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "Team ID", width: 100 },

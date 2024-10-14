@@ -3,13 +3,13 @@
 import { useSearchQuery } from "@/state/api";
 import React, { useEffect, useState } from "react";
 import { debounce } from "lodash";
-import { Dialog, DialogContent } from '@/components/UI/dialog';
-import { Input } from '@/components/UI/input';
+import { Dialog, DialogContent } from '@/UI/dialog';
+import { Input } from '@/UI/input';
 import { Globe, Users, CheckSquare, AlertCircle, FolderKanban } from 'lucide-react';
 import TaskTable from "@/components/TaskTable";
 import ProjectCard from "@/components/ProjectCard";
 import UserCard from "@/components/UserCard";
-import Spinner from "../UI/spinner";
+import Spinner from "../../UI/spinner";
 
 type SearchCategory = 'All' | 'Project' | 'Team' | 'User' | 'Task' | 'Priority';
 

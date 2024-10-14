@@ -2,7 +2,7 @@ import Modal from "@/components/Modal";
 import { useCreateProjectMutation } from "@/state/api";
 import React, { useState } from "react";
 import { formatISO } from "date-fns";
-import Spinner from "@/components/UI/spinner";
+import Spinner from "@/UI/spinner";
 
 type Props = {
   isOpen: boolean;

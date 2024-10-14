@@ -5,7 +5,7 @@ import {DisplayOption, Gantt, ViewMode} from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
 import Select from 'react-select';
 import { useTheme } from 'next-themes';
-import Spinner from '@/components/UI/spinner';
+import Spinner from '@/UI/spinner';
 
 type Props = {
     id: string;
