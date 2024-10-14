@@ -89,7 +89,7 @@ const TaskColumn = ({
               className={`w-2 !bg-[${statusColor[status]}] rounded-s-lg`}
               style={{ backgroundColor: statusColor[status] }}
             />
-            <div className="flex w-full items-center justify-between rounded-e-lg bg-gray-100m shadow-md px-5 py-4 dark:bg-dark-secondary">
+            <div className="flex w-full items-center justify-between rounded-e-lg bg-gray-100 shadow-md px-5 py-4 dark:bg-dark-secondary">
               <h3 className="flex items-center text-lg font-semibold dark:text-white">
                 {status}{" "}
                 <span
@@ -109,7 +109,7 @@ const TaskColumn = ({
             </div>
             </div>
           </div>
-          <div className='bg-gray-100 p-4 rounded-lg'>
+          <div className='bg-gray-100 p-4 rounded-lg dark:bg-dark-tertiary'>
             {tasks
               .filter((task) => task.status === status)
               .map((task) => (
@@ -173,7 +173,7 @@ const Task = ({task}: TaskProps) => {
               {task.priority && <PriorityTag priority={task.priority}/>}
               <div className='flex gap-2'>
                 {taskTagsSplit.map((tag)=> (
-                  <div key={tag} className='rounded-full bg-blue-100 px-2 py-1 text-xs'>
+                  <div key={tag} className='rounded-full bg-blue-100 text-blue-800 px-2 py-1 text-xs'>
                     {" "} {tag}
                   </div>
                 ))}

@@ -83,8 +83,6 @@ const ReusablePriorityPage = ({ priority }: Props) => {
 
   const { data: currentUser } = useGetAuthUserQuery({});
   const userId = currentUser?.userDetails?.userId ?? 1;
-  console.log("userId", userId)
-  console.log("currentUser", currentUser)
   
   const {
     data: tasks,
@@ -119,19 +117,19 @@ const ReusablePriorityPage = ({ priority }: Props) => {
           </button>
         }
       />
-      <div className="mb-4 flex justify-start">
+      <div className="mb-4 flex justify-start border border-gray-100 shadow-sm p-1 w-min rounded-md">
         <button
-          className={`px-4 py-2 ${
-            view === "list" ? "bg-gray-300" : "bg-white"
-          } rounded-l`}
+          className={`px-4 py-2 rounded-m ${
+            view === "list" ? "bg-gray-200" : "bg-white"
+          } rounded-lg`}
           onClick={() => setView("list")}
         >
           List
         </button>
         <button
           className={`px-4 py-2 ${
-            view === "table" ? "bg-gray-300" : "bg-white"
-          } rounded-l`}
+            view === "table" ? "bg-gray-200" : "bg-white"
+          } rounded-lg`}
           onClick={() => setView("table")}
         >
           Table
@@ -150,7 +148,6 @@ const ReusablePriorityPage = ({ priority }: Props) => {
             <DataGrid
               rows={filteredTasks}
               columns={columns}
-              checkboxSelection
               getRowId={(row) => row.id}
               className={dataGridClassNames}
               sx={dataGridSxStyles(isDarkMode)}

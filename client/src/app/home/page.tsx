@@ -209,21 +209,21 @@ type DashboardProps  = {
 
 const DashboardStats = ({icon: Icon, count, title, bgColor, iconColor}: DashboardProps) => {
   return (
-    <div className="w-full flex flex-col border border-gray-100 shadow-sm rounded-lg p-4 mb-4">
+    <div className="w-full flex flex-col border border-gray-100 dark:bg-dark-secondary dark:border-gray-600 shadow-sm rounded-lg p-4 mb-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
             <span><Icon className={`size-6 ${bgColor} ${iconColor} rounded-sm p-1`}/></span>
-            <p className="text-base text-gray-600">{title}</p>
+            <p className="text-base text-gray-600 dark:text-white">{title}</p>
         </div>
         <div 
          data-tooltip-id={title}
          data-tooltip-content={title}
          data-tooltip-place="right">
-          <Info className="size-4 text-gray-400"/>
+          <Info className="size-4 text-gray-400 dark:text-gray-300"/>
         </div>
       </div>
       <ReactToolTip id={title}/>
-      <span className="flex text-3xl text-gray-600 font-bold mt-2">{count}</span>
+      <span className="flex text-3xl text-gray-600 font-bold mt-2 dark:text-gray-300">{count}</span>
     </div>
   )
 }
