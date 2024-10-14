@@ -17,6 +17,25 @@ export const getProjects = async (
   }
 };
 
+export const getProjectById = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const {Id} = req.params;
+  try {
+    const projects = await prisma.project.findUnique({
+      where: {
+        id: Number(Id)
+      }
+    });
+    res.json(projects);
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: `Error retrieving projects: ${error.message}` });
+  }
+};
+
 export const createProject = async (
   req: Request,
   res: Response

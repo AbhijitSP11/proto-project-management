@@ -132,6 +132,10 @@ export const api = createApi({
             }), 
             invalidatesTags: ["Projects"]
         }),
+        getProjectById: build.query<Project[], {id: number}>({
+            query: ({id}) => `projects?id=${id}`,  
+            providesTags: ["Projects"],
+        }),
         getTasks: build.query<Task[], {projectId:number}>({
             query: ({projectId})=> `tasks?projectId=${projectId}`, 
             providesTags: (result) => result? result.map(({id}) => ({type: "Tasks" as const, id})) : [{type: "Tasks" as const}]
@@ -200,4 +204,5 @@ export const {
     useGetTasksByUserQuery, 
     useGetAuthUserQuery, 
     useGroqChatMutation,
+    useGetProjectByIdQuery
 } = api;

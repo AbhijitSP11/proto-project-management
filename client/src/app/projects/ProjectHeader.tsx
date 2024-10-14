@@ -2,14 +2,18 @@ import Header from '@/components/Header';
 import { Clock, Filter, Grid3x3, List, PlusSquare, Share2, Table } from 'lucide-react';
 import React, { useState } from 'react'
 import ModalNewProject from "./ModalNewProject"
+import { useGetProjectByIdQuery } from '@/state/api';
 
 type Props = {
   activeTab: string;
   setActiveTab: (tabName: string) => void;
+  id?:string;
 };
 
-const ProjectHeader = ({activeTab, setActiveTab}: Props) => {
+const ProjectHeader = ({activeTab, setActiveTab, id}: Props) => {
   const [isModalNewProjectOpen, setIsModalNewProjectOpen] = useState<boolean>(false);
+
+  const {data: project} = useGetProjectByIdQuery({id: Number(id)});
 
   return (
     <div className="px-4 xl:px-6">
@@ -17,9 +21,12 @@ const ProjectHeader = ({activeTab, setActiveTab}: Props) => {
         isOpen={isModalNewProjectOpen}
         onClose={() => setIsModalNewProjectOpen(false)}
       />
-      <div className="pb-6 pt-6 lg:pb-4 lg:pt-8">
+      <div className="flex items-center gap-2 pb-6 pt-6 lg:pb-4 lg:pt-8">
+        <span className="flex rounded-lg px-6 py-2 text-2xl mb-5 items-center justify-center bg-blue-500 text-white font-bold">
+          {project && project[0].name[0]}
+        </span>
         <Header 
-          name="Dashboard"
+          name={`${project && project[0].name} Project Dashboard`}
           buttonComponent={
             <button
               onClick={()=> setIsModalNewProjectOpen(true)} 
