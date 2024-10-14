@@ -103,7 +103,6 @@ const ChatBot = () => {
     try {
       const response = await sendMessage({ message: inputText }).unwrap();
       dispatch(addMessageToChat({ role: 'user', content: inputText }));
-      dispatch(addMessageToChat({ role: 'bot', content: response.response }));
       setInputText('');
     } catch (error) {
       console.error('Failed to send message:', error);
