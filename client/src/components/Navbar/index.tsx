@@ -80,7 +80,8 @@ const Navbar = () => {
                 <p>Settings</p>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleSignOut} className='flex items-center gap-2 p-2'>
+            <DropdownMenuItem onClick={handleSignOut} className='flex items-center gap-2 p-2 mt-2 
+              border-t border-gray-400 dark:border-gray-600'>
               <LucideLogOut className='size-5'/> 
               <p>Sign Out</p>
             </DropdownMenuItem>

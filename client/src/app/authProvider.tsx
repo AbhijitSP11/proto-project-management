@@ -1,8 +1,9 @@
-import React, { ReactNode } from 'react'
-import {Authenticator } from "@aws-amplify/ui-react";
+import React from 'react'
+import { Authenticator, ThemeProvider, View, useTheme } from '@aws-amplify/ui-react';
 import { Amplify } from 'aws-amplify';
 import "@aws-amplify/ui-react/styles.css";
-import { signUp } from 'aws-amplify/auth';
+import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 
 Amplify.configure({
     Auth: {
@@ -14,51 +15,102 @@ Amplify.configure({
 });
 
 const formFields = {
-    signUp:{
-        username: {
-            order: 1, 
-            placeholder: "Choose a number", 
-            label: "Username", 
-            inputProps: {required: true}
-        }, 
-        email: {
-            order: 2, 
-            placeholder: "Enter your email", 
-            label: "Email", 
-            inputProps: {type: "email", required: true}
-        },
-        password: {
-            order: 3, 
-            placeholder: "Password", 
-            label: "Password", 
-            inputProps: {type: "password", required: true}
-        },
-        confirm_password: {
-            order: 4, 
-            placeholder: "Confirm Password", 
-            label: "Confirm Password", 
-            inputProps: {type: "password", required: true}
-        },
-    }
-}
+    signUp: {
+      username: {
+        order: 1,
+        placeholder: 'Enter your username',
+        label: 'Username',
+        inputProps: { required: true },
+      },
+      email: {
+        order: 2,
+        placeholder: 'Enter your email',
+        label: 'Email',
+        inputProps: { required: true, type: 'email' },
+      },
+      password: {
+        order: 3,
+        placeholder: 'Password',
+        label: 'Password',
+        inputProps: { required: true, type: 'password' },
+      },
+      confirm_password: {
+        order: 4,
+        placeholder: 'Confirm Password',
+        label: 'Confirm Password',
+        inputProps: { required: true, type: 'password' },
+      },
+    },
+    signIn: {
+      username: {
+        order: 1,
+        placeholder: 'Username or email',
+        label: 'Username',
+        inputProps: { required: true },
+      },
+      password: {
+        order: 2,
+        placeholder: 'Password',
+        label: 'Password',
+        inputProps: { required: true, type: 'password' },
+      },
+    },
+  };
 
-const AuthProvider = ({children}: any) => {
-  return (
-    <div>
+
+  const theme = {
+    name: 'modern-form-theme',
+    tokens: {
+      components: {
+        button: {
+          fontSize: { value: '1rem' },
+          borderRadius: { value: '8px' },
+          paddingBlock: { value: '12px' },
+          paddingInline: { value: '24px' },
+          primary: {
+            backgroundColor: { value: '#2563EB' },
+            color: { value: '#fff' },
+            _hover: {
+              backgroundColor: { value: '#1D4ED8' },
+            },
+          },
+        },
+        input: {
+          borderColor: { value: '#CBD5E1' },
+          _focus: {
+            borderColor: { value: '#2563EB' },
+          },
+          padding: { value: '12px' },
+          borderRadius: { value: '8px' },
+        },
+      },
+    },
+  };
+  
+  const AuthProvider = ({ children }: any) => {
+    return (
+      <ThemeProvider theme={theme}>
         <Authenticator formFields={formFields}>
-            {({user}: any) => user ? (
-                <div>
-                    {children}
-                </div>
-            ) : (
-                <div>
-                    <h1>Please sing in</h1>
-                </div>
-            ) 
-        }
+          {({ user }) => (
+            <div>
+                {!user && <h1 className="text-4xl font-semibold mb-6">Log in to your Account</h1>}
+                {user ? (
+                <div className="w-full">{children}</div>
+                ) : (
+                <motion.div
+                    className="flex flex-col gap-4"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.4, duration: 0.8 }}
+                >
+                    {/* Amplify form fields will be rendered here */}
+                </motion.div>
+                )}
+            </div>
+          )}
         </Authenticator>
-    </div>
-  )
-}
-
+      </ThemeProvider>
+    );
+  };
+  
 export default AuthProvider

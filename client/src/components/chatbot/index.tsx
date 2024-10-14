@@ -140,6 +140,7 @@ const ChatBot = () => {
               </Button>
             </div>
             <div className="flex-1 overflow-y-auto p-4 bg-white dark:bg-dark-secondary dark:text-gray-50">
+              {renderContent()}
               <div className="space-y-4 mt-4">
                 {messages.map((message, index) => (
                   <div key={index} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
