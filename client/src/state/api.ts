@@ -179,15 +179,7 @@ export const api = createApi({
               url: '/groq/chat',
               method: 'POST',
               body: chatRequest,
-            }),
-            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-              try {
-                const { data } = await queryFulfilled;
-                dispatch(addMessageToChat({ role: 'bot', content: data.response }));
-              } catch (error) {
-                console.log("error")
-              }
-            },
+            })
           })
     }),
 });
