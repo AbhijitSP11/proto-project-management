@@ -1,14 +1,10 @@
 "use client";
 import { useGetUsersQuery } from "@/state/api";
 import React from "react";
-import { useAppSelector } from "../redux";
 import Header from "@/components/Header";
 import {
   DataGrid,
   GridColDef,
-  GridToolbarContainer,
-  GridToolbarExport,
-  GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import Image from "next/image";
 import { dataGridClassNames, dataGridSxStyles } from "@/utils/dataGridClassNames.utils";
