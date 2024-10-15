@@ -27,7 +27,7 @@ import {
 import { dataGridClassNames, dataGridSxStyles } from "@/utils/dataGridClassNames.utils";
 import { COLORS, taskColumns } from "@/constants/constants";
 import { useTheme } from "next-themes";
-import Spinner from "@/UI/spinner";
+import Spinner from "@/components/Spinner";
 import { BarChartIcon, CheckCircleIcon, ClockIcon, FlagIcon, Info, LucideIcon, PieChartIcon, UsersIcon } from "lucide-react";
 import { Tooltip as ReactToolTip} from 'react-tooltip';
 

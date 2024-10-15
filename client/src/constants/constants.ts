@@ -2,30 +2,45 @@ import { Priority, Status } from "@/state/api";
 import { GridColDef } from "@mui/x-data-grid";
 
 export const colors: string[] = [
-    'bg-red-500',
-    'bg-green-500',
-    'bg-blue-500',
-    'bg-yellow-500',
-    'bg-purple-500',
-    'bg-pink-500',
-    'bg-indigo-500',
-    'bg-orange-500',
-  ];
+  '#EF4444', // Red
+  '#10B981', // Green
+  '#3B82F6', // Blue
+  '#F59E0B', // Yellow
+  '#8B5CF6', // Purple
+  '#EC4899', // Pink
+  '#6366F1', // Indigo
+  '#F97316', // Orange
+];
 
-export const STATUS_STYLES: Record<Status, string> = {
-    [Status.Completed]: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-    [Status.WorkInProgress]: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-    [Status.ToDo]: 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200',
-    [Status.UnderReview]: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200'
-  };
-  
-export const PRIORITY_STYLES: Record<Priority, string> = {
-    [Priority.Urgent]: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-    [Priority.High]: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
-    [Priority.Medium]: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-    [Priority.Low]: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-    [Priority.Backlog]: 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'
-  };
+export const getColor = (color: keyof typeof colorSystem, isDark: boolean = false) => ({
+  background: isDark ? colorSystem[color].dark : colorSystem[color].light,
+  text: isDark ? colorSystem[color].light : colorSystem[color].text,
+});
+
+export const colorSystem = {
+  red: { light: '#FEE2E2', dark: '#7F1D1D', text: '#991B1B' },
+  orange: { light: '#FFEDD5', dark: '#7C2D12', text: '#C2410C' },
+  yellow: { light: '#FEF3C7', dark: '#78350F', text: '#B45309' },
+  green: { light: '#D1FAE5', dark: '#064E3B', text: '#065F46' },
+  blue: { light: '#DBEAFE', dark: '#1E3A8A', text: '#1E40AF' },
+  purple: { light: '#EDE9FE', dark: '#4C1D95', text: '#5B21B6' },
+  gray: { light: '#F3F4F6', dark: '#111827', text: '#374151' },
+};
+
+export const statusColorMap: Record<Status, keyof typeof colorSystem> = {
+  [Status.Completed]: 'green',
+  [Status.WorkInProgress]: 'yellow',
+  [Status.ToDo]: 'gray',
+  [Status.UnderReview]: 'purple',
+};
+
+export const priorityColorMap: Record<Priority, keyof typeof colorSystem> = {
+  [Priority.Urgent]: 'red',
+  [Priority.High]: 'orange',
+  [Priority.Medium]: 'blue',
+  [Priority.Low]: 'green',
+  [Priority.Backlog]: 'gray',
+};
 
 export const taskColumns: GridColDef[] = [
   {field: "title", headerName: "Title", width:200}, 
@@ -50,3 +65,4 @@ export const LightModePie = {
   pieFill: "#82ca9d", 
   text: "#000000"
 }
+

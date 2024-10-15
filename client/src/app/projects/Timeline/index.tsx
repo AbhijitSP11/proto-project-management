@@ -5,7 +5,7 @@ import "gantt-task-react/dist/index.css";
 import Select from 'react-select';
 import { useAppSelector } from '@/app/redux';
 import { useGetTasksQuery } from '@/state/api';
-import Spinner from '@/UI/spinner';
+import Spinner from "@/components/Spinner";
 import { useTheme } from 'next-themes';
 
 type Props = {

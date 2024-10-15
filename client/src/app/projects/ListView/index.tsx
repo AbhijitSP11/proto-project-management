@@ -2,7 +2,7 @@ import React from 'react'
 import Header from '@/components/Header';
 import { Task, useGetTasksQuery } from '@/state/api';
 import TaskTable from '@/components/TaskTable';
-import Spinner from '@/UI/spinner';
+import Spinner from "@/components/Spinner";
 
 type Props = {
     id: string;

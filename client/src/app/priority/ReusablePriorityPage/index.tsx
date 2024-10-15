@@ -3,7 +3,7 @@
 import Header from "@/components/Header";
 import ModalNewTask from "@/components/ModalNewTask";
 import TaskBoard from "@/components/TaskTable";
-import Spinner from "@/UI/spinner";
+import Spinner from "@/components/Spinner";
 
 import {
   Priority,
@@ -117,10 +117,10 @@ const ReusablePriorityPage = ({ priority }: Props) => {
           </button>
         }
       />
-      <div className="mb-4 flex justify-start border border-gray-100 shadow-sm p-1 w-min rounded-md">
+      <div className="mb-4 flex justify-start border bg-gray-100 dark:bg-gray-700 dark:border-transparent border-gray-100 shadow-sm p-1 w-min rounded-md">
         <button
           className={`px-4 py-2 rounded-m ${
-            view === "list" ? "bg-gray-200" : "bg-white"
+            view === "list" ? "bg-white shadow-sm dark:bg-gray-800" : "bg-gray-100 dark:bg-gray-700"
           } rounded-lg`}
           onClick={() => setView("list")}
         >
@@ -128,7 +128,7 @@ const ReusablePriorityPage = ({ priority }: Props) => {
         </button>
         <button
           className={`px-4 py-2 ${
-            view === "table" ? "bg-gray-200" : "bg-white"
+            view === "table" ? "bg-white shadow-sm dark:bg-gray-800" : "bg-gray-100 dark:bg-gray-700"
           } rounded-lg`}
           onClick={() => setView("table")}
         >

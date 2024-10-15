@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Home, ChevronLeft, CheckSquare, PlusCircle, BarChart2, Sparkles } from 'lucide-react';
-import { Input } from '@/UI/input';
-import { Button } from '@/UI/button';
+import { MessageCircle, X, Send, ChevronLeft, Sparkles } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { useTheme } from 'next-themes';
 import { useGroqChatMutation } from '@/state/api';
 import { useAppDispatch, useAppSelector } from '@/app/redux';
 import { addMessageToChat } from '@/state/chatSlice';
+import ReactMarkdown, { Components } from 'react-markdown';
+import { customComponents, menuOptions } from '@/constants/markdown';
+import { Discuss } from 'react-loader-spinner';
 
 const ChatBot = () => {
-  const { theme } = useTheme();
   const dispatch = useAppDispatch();
 
   const messages = useAppSelector((state) => state.chat.messages);
@@ -22,22 +24,25 @@ const ChatBot = () => {
 
   const toggleChat = () => setIsOpen(!isOpen);
 
-  const menuOptions = [
-    { id: 'tasks', label: 'Tasks', icon: CheckSquare, subOptions: [
-      'Ask about your current tasks',
-      'Tasks according to priority (urgent tasks)',
-      'Tasks completed',
-      'Comments, attachments and description related to a task'
-    ]},
-    { id: 'create', label: 'Create', icon: PlusCircle, subOptions: [
-      'Create Task',
-      'Create Project Board'
-    ]},
-    { id: 'summarize', label: 'Summarize', icon: BarChart2, subOptions: [
-      'Timeline of a project',
-      'Tasks assigned to users in a team'
-    ]}
-  ];
+
+
+  const handleSendMessage = async (message: string) => {
+    if (!message.trim()) return;
+
+    try {
+      const response = await sendMessage({ message }).unwrap();
+      dispatch(addMessageToChat({ role: 'user', content: message }));
+      dispatch(addMessageToChat({ role: 'bot', content: response.response }));
+      setInputText('');
+    } catch (error) {
+      console.error('Failed to send message:', error);
+    }
+  };
+
+  const handleSubmit  = async (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSendMessage(inputText);
+  };
 
   const renderContent = () => {
     if (currentSection === 'home') {
@@ -76,9 +81,10 @@ const ChatBot = () => {
           </div>
         </>
       );
-    }
-
+    };
+   
     const section = menuOptions.find(option => option.id === currentSection);
+    
     return (
       <div className="space-y-3">
         {section && section.subOptions.map((subOption, index) => (
@@ -87,7 +93,7 @@ const ChatBot = () => {
             variant="outline"
             className="w-full text-left justify-start bg-white hover:bg-gray-100 text-gray-800 rounded-lg p-3 
             dark:bg-dark-secondary dark:text-gray-50"
-            onClick={() => {/* Handle sub-option click */}}
+            onClick={() => {handleSendMessage(subOption)}}
           >
             {subOption}
           </Button>
@@ -96,20 +102,6 @@ const ChatBot = () => {
     );
   };
 
-  const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!inputText.trim()) return;
-
-    try {
-      const response = await sendMessage({ message: inputText }).unwrap();
-      dispatch(addMessageToChat({ role: 'user', content: inputText }));
-      dispatch(addMessageToChat({ role: 'bot', content: response.response }));
-      setInputText('');
-    } catch (error) {
-      console.error('Failed to send message:', error);
-    }
-  };
-  
   return (
     <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-4">
       <AnimatePresence>
@@ -141,22 +133,37 @@ const ChatBot = () => {
               {renderContent()}
               <div className="space-y-4 mt-4">
                 {messages.map((message, index) => (
-                  <div key={index} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div key={index} className={`flex gap-2 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                     {message.role === 'bot' && (
-                      <div className="rounded-full border border-blue-400 p-2">
-                        <Sparkles className='size-4' />
+                      <div className="w-min relative p-2 bg-white dark:bg-dark-secondary rounded-full border-2 border-blue-500">
+                        <Sparkles className="size-4 text-blue-500" />
                       </div>
                     )}
-                    <div className={`p-4 rounded-lg border border-gray-300 dark:border-gray-600 ${message.role === 'user' ? 
+                    <div className={`p-2 rounded-lg border border-gray-300 dark:border-gray-600 ${message.role === 'user' ? 
                       'bg-blue-100 dark:bg-transparent ml-auto' : 'bg-gray-100 dark:bg-transparent'}`}>
-                      {message.content}
+                       <ReactMarkdown components={customComponents}>{message.content}</ReactMarkdown>
                     </div>
                   </div>
                 ))}
+                {isLoading && (
+                  <div className="flex mt-4 gap-2">
+                    <div className="relative p-2 bg-white dark:bg-dark-secondary rounded-full border-2 border-blue-500">
+                      <Sparkles className="size-4 text-blue-500" />
+                    </div>
+                    <Discuss
+                      visible={true}
+                      height="30"
+                      width="30"
+                      ariaLabel="discuss-loading"
+                      wrapperStyle={{}}
+                      wrapperClass="discuss-wrapper"
+                    />
+                  </div>
+                )}
               </div>
             </div>
             <div className="p-4 dark:bg-dark-secondary bg-gray-50 border-t rounded-b-xl">
-              <form onSubmit={handleSendMessage} className="flex items-center gap-2">
+              <form className="flex items-center gap-2">
                 <Input 
                   placeholder="Type your message..." 
                   className="flex-grow bg-white dark:bg-dark-secondary dark:text-gray-50" 
@@ -164,12 +171,13 @@ const ChatBot = () => {
                   onChange={(e) => setInputText(e.target.value)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
-                      handleSendMessage(e);
+                      handleSubmit(e);
                     }
                   }}
                 />
                 <Button 
                   size="icon" 
+                  onClick={() => handleSendMessage(inputText)}
                   className="bg-blue-700 hover:bg-blue-600 text-white p-2 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={!inputText.trim()}
                 >

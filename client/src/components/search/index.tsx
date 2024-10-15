@@ -3,13 +3,13 @@
 import { useSearchQuery } from "@/state/api";
 import React, { useEffect, useState } from "react";
 import { debounce } from "lodash";
-import { Dialog, DialogContent } from '@/UI/dialog';
-import { Input } from '@/UI/input';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import { Globe, Users, CheckSquare, AlertCircle, FolderKanban } from 'lucide-react';
 import TaskTable from "@/components/TaskTable";
 import ProjectCard from "@/components/ProjectCard";
 import UserCard from "@/components/UserCard";
-import Spinner from "../../UI/spinner";
+import Spinner from "@/components/Spinner";
 
 type SearchCategory = 'All' | 'Project' | 'Team' | 'User' | 'Task' | 'Priority';
 
@@ -54,19 +54,18 @@ const Search = () => {
       activeCategory === 'All' || activeCategory === 'User'
     ),
   };
-
   return (
     <div className="w-full p-4">
       <button 
         onClick={() => setIsOpen(true)}
-        className="w-full mx-auto px-4 py-2 text-left text-gray-500 border rounded-lg shadow hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+        className="w-full mx-auto px-4 py-2 text-left text-gray-500 border rounded-lg shadow dark:hover:bg-gray-800 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
       >
-        Global search...
+        Search across the workspace for projects, tasks, teams...
       </button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="w-[90vw] max-w-3xl p-0 gap-0">
-          <div className="space-y-4 p-4 md:p-6">
+          <div className="space-y-4 p-4 md:p-6 mt-4">
             <Input 
               placeholder="Global search..." 
               className="w-full text-lg focus:outline-none focus:border-none"
@@ -80,7 +79,7 @@ const Search = () => {
                   onClick={() => setActiveCategory(category.id)}
                   className={`flex items-center space-x-1 rounded-md px-3 py-1.5 text-sm transition-colors ${
                     activeCategory === category.id 
-                      ? 'bg-black text-white' 
+                      ? 'bg-gray-800 text-white' 
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >

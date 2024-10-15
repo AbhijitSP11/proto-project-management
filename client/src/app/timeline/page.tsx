@@ -8,7 +8,7 @@ import "gantt-task-react/dist/index.css";
 import Select from 'react-select';
 import Header from '@/components/Header';
 import { useTheme } from 'next-themes';
-import Spinner from '@/UI/spinner';
+import Spinner from "@/components/Spinner";
 
 interface ViewModeOption {
     value: ViewMode;

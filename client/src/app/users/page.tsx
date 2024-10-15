@@ -9,7 +9,7 @@ import {
 import Image from "next/image";
 import { dataGridClassNames, dataGridSxStyles } from "@/utils/dataGridClassNames.utils";
 import { useTheme } from "next-themes";
-import Spinner from "@/UI/spinner";
+import Spinner from "@/components/Spinner";
 
 const columns: GridColDef[] = [
   { field: "userId", headerName: "ID", width: 100 },

@@ -13,8 +13,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/UI/dropdown-menu";
-import { Button } from "@/UI/button";
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
   const { setTheme } = useTheme()
@@ -87,7 +87,6 @@ const Navbar = () => {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-           
             <span className='mx-3 text-gray-800 dark:text-white'>{currentUserDetails?.username}</span>
         </div>
       </div>

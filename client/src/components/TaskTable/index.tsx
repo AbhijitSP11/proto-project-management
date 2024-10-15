@@ -4,8 +4,7 @@ import { Tooltip } from 'react-tooltip';
 import { FlagIcon } from 'lucide-react';
 import { Priority, Status, Task, User } from '@/state/api';
 import { getInitials } from '@/utils/getInitials.utils';
-import { getColorForName } from '@/utils/getProfileColor.utils';
-import {  colors, PRIORITY_STYLES, STATUS_STYLES } from '@/constants/constants';
+import {  colors, getColor, priorityColorMap, statusColorMap} from '@/constants/constants';
 
 interface TaskGroupProps {
   status: Status;
@@ -14,6 +13,8 @@ interface TaskGroupProps {
 
 interface StatusBadgeProps {
   status: Status | string;
+  isDark?: boolean;
+
 }
 
 interface AssigneeAvatarProps {
@@ -22,48 +23,83 @@ interface AssigneeAvatarProps {
 
 interface PriorityFlagProps {
   priority: Priority | string;
+  isDark?: boolean;
 }
 
-const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => (
-  <div 
-    className={`w-4 h-4 rounded-full border-2 mr-2 ${STATUS_STYLES[status as Status]}`}
-  />
-);
-
-function useConsistentColor(username: string) {
-  return useMemo(() => {
-    let hash = 0;
-    for (let i = 0; i < username.length; i++) {
-      hash = username.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return colors[Math.abs(hash) % colors.length];
-  }, [username]);
-}
-
-const AssigneeAvatar: React.FC<AssigneeAvatarProps> = ({ user }) => {
-  const username = user?.username ?? "Not Available";
-  const color = useConsistentColor(username);
-
+const StatusBadge: React.FC<StatusBadgeProps> = ({ status, isDark = false }) => {
+  const color = getColor(statusColorMap[status as Status], isDark);
+  
   return (
-    <span 
-      data-tooltip-id="assignee-id"
-      data-tooltip-content={username}
-      data-tooltip-place="right"
-      className={`flex items-center justify-center w-8 h-8 rounded-full text-xs text-white font-semibold p-2 ${color}`}
-    >
-      {getInitials(username)}
-    </span>
+    <div 
+      style={{
+        width: '1rem',
+        height: '1rem',
+        borderRadius: '9999px',
+        marginRight: '0.5rem',
+        backgroundColor: color.background,
+        border: `2px solid ${color.text}`,
+      }}
+    />
   );
 };
 
-const PriorityFlag: React.FC<PriorityFlagProps> = ({ priority }) => (
-  <FlagIcon className={`${PRIORITY_STYLES[priority as Priority]} size-6`} />
-);
-const TaskGroup: React.FC<TaskGroupProps> = ({ status, tasks }) => {
-  console.log("status", status)
+
+function useColorAssignment(username: string): string {
+  const hash = username.split('').reduce((acc, char) => {
+    return char.charCodeAt(0) + ((acc << 5) - acc);
+  }, 0);
+  const index = Math.abs(hash) % colors.length;
+  return colors[index];
+}
+const AssigneeAvatar: React.FC<AssigneeAvatarProps> = ({ user }) => {
+  const username = user?.username ?? "Not Available";
+  const color = useColorAssignment(username);
+
   return (
-  <div className="rounded-lg border border-gray-200 mb-6">
-      <div className="flex items-center justify-between p-4 border-b border-gray-200">
+    <span 
+    data-tooltip-id="assignee-id"
+    data-tooltip-content={username}
+    data-tooltip-place="right"
+    style={{
+      backgroundColor: color,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '2rem',
+      height: '2rem',
+      borderRadius: '9999px',
+      fontSize: '0.75rem',
+      color: 'white',
+      fontWeight: '600',
+      padding: '0.5rem',
+    }}
+  >
+    {getInitials(username)}
+  </span>
+  );
+};
+
+
+const PriorityFlag: React.FC<PriorityFlagProps> = ({ priority, isDark = false }) => {
+  const color = getColor(priorityColorMap[priority as Priority], isDark);
+  
+  return (
+    <FlagIcon 
+      style={{
+        color: color.text,
+        backgroundColor: color.background,
+        padding: '4px',
+        borderRadius: '4px',
+      }}
+      size={24}
+    />
+  );
+};
+
+const TaskGroup: React.FC<TaskGroupProps> = ({ status, tasks }) => {
+  return (
+  <div className="rounded-lg border border-gray-200 dark:border-[#2d3135] mb-6">
+      <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-[#2d3135]">
         <div className="flex items-center gap-2">
           <StatusBadge status={status} />
           <span className="font-medium">{status}</span>
@@ -72,7 +108,7 @@ const TaskGroup: React.FC<TaskGroupProps> = ({ status, tasks }) => {
       </div>
       
       <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
+        <thead className="bg-gray-50 dark:bg-[#1d1f21]">
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Task</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Assignee</th>
@@ -80,7 +116,7 @@ const TaskGroup: React.FC<TaskGroupProps> = ({ status, tasks }) => {
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Priority</th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody className="bg-white dark:bg-[#1d1f21] divide-y divide-gray-200">
           {tasks.map(task => (
             <tr key={task.id}>
               <td className="px-6 py-4 w-[50%]"> 
@@ -119,7 +155,6 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ tasks }) => {
     acc[status].push(task);
     return acc;
   }, {} as Record<Status, Task[]>);
-  console.log("tasks", tasks);
   return (
     <div className="flex flex-col w-full justify-start overflow-x-auto">
       {Object.entries(Status).map(([key, status]) => (
