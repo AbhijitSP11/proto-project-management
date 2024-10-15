@@ -13,6 +13,7 @@ const MODEL = "llama3-groq-70b-8192-tool-use-preview";
 app.use(express.json());
 
 // API functions
+
 async function getUserTasks(userId: number): Promise<string> {
   const tasks = await prisma.task.findMany({
     where: {
@@ -180,6 +181,25 @@ async function getUserWorkload(userId: number): Promise<string> {
   return JSON.stringify(tasks);
 }
 
+async function searchEntity(entityType: string, name: string): Promise<number | null> {
+  switch (entityType.toLowerCase()) {
+    case 'user':
+      const user = await prisma.user.findFirst({ where: { username: { contains: name, mode: 'insensitive' } } });
+      return user?.userId || null;
+    case 'team':
+      const team = await prisma.team.findFirst({ where: { teamName: { contains: name, mode: 'insensitive' } } });
+      return team?.id || null;
+    case 'project':
+      const project = await prisma.project.findFirst({ where: { name: { contains: name, mode: 'insensitive' } } });
+      return project?.id || null;
+    case 'task':
+      const task = await prisma.task.findFirst({ where: { title: { contains: name, mode: 'insensitive' } } });
+      return task?.id || null;
+    default:
+      return null;
+  }
+}
+
 
 async function runConversation(userPrompt: string) {
   const messages: Groq.Chat.Completions.ChatCompletionMessageParam[] = [
@@ -189,7 +209,8 @@ async function runConversation(userPrompt: string) {
       Use the provided functions to retrieve information about 
       tasks, projects, and team members based on the user's request. 
       Always provide concise and relevant responses. 
-      While providing response to the users do no provide any type of Id to the frontend in the response`
+      While providing response to the users do not provide any type of Id to the front-end in the response.
+      If a user asks about a specific entity by name, use the searchEntity function to find its ID first.`
     },
     {
       role: "user",
@@ -198,6 +219,28 @@ async function runConversation(userPrompt: string) {
   ];
 
   const tools: Groq.Chat.Completions.ChatCompletionTool[] = [
+    {
+      type: "function",
+      function: {
+        name: "searchEntity",
+        description: "Search for a user, team, project, or task by name and return its ID.",
+        parameters: {
+          type: "object",
+          properties: {
+            entityType: {
+              type: "string",
+              enum: ["user", "team", "project", "task"],
+              description: "The type of entity to search for",
+            },
+            name: {
+              type: "string",
+              description: "The name of the entity to search for",
+            },
+          },
+          required: ["entityType", "name"],
+        },
+      },
+    },
     {
       type: "function",
       function: {
@@ -383,7 +426,7 @@ async function runConversation(userPrompt: string) {
       model: MODEL,
       messages: messages,
       tools: tools,
-      max_tokens: 400
+      max_tokens: 1001
     });
 
     const responseMessage = response.choices[0].message;
@@ -391,6 +434,7 @@ async function runConversation(userPrompt: string) {
 
     if (toolCalls) {
       const availableFunctions = {
+        searchEntity,
         getUserTasks,
         getAllTasks,
         getUserProject,
@@ -404,19 +448,52 @@ async function runConversation(userPrompt: string) {
         getUserWorkload
       };
 
-      messages.push(responseMessage);
+      type AvailableFunction = (arg: any) => Promise<string | number | null>;
 
+      messages.push(responseMessage);
+  
       for (const toolCall of toolCalls) {
         const functionName = toolCall.function.name as keyof typeof availableFunctions;
-        const functionToCall = availableFunctions[functionName];
+        const functionToCall = availableFunctions[functionName] as AvailableFunction;
         const functionArgs = JSON.parse(toolCall.function.arguments);
-        const functionResponse = await functionToCall(functionArgs.userId || functionArgs.projectId || functionArgs.teamId);
-
-        messages.push({
-          role: "function",
-          name: functionName,
-          content: functionResponse,
-        });
+  
+        let functionResponse: any;
+  
+        if (functionName === 'searchEntity') {
+          if ('entityType' in functionArgs && 'name' in functionArgs) {
+            functionResponse = await (functionToCall as (entityType: string, name: string) => Promise<number | null>)(
+              functionArgs.entityType,
+              functionArgs.name
+            );
+          }
+        } else {
+          // If the function requires an ID, check if we need to search for it first
+          if ('userId' in functionArgs || 'projectId' in functionArgs || 'teamId' in functionArgs) {
+            const idType = 'userId' in functionArgs ? 'user' : 'projectId' in functionArgs ? 'project' : 'team';
+            const idValue = functionArgs.userId || functionArgs.projectId || functionArgs.teamId;
+            
+            if (typeof idValue === 'string') {
+              const searchedId = await searchEntity(idType, idValue);
+              if (searchedId) {
+                if ('userId' in functionArgs) functionArgs.userId = searchedId;
+                if ('projectId' in functionArgs) functionArgs.projectId = searchedId;
+                if ('teamId' in functionArgs) functionArgs.teamId = searchedId;
+              }
+            }
+          }
+  
+          functionResponse = await functionToCall(
+            functionArgs.userId || functionArgs.projectId || functionArgs.teamId || undefined
+          );
+        }
+  
+        if (functionResponse !== undefined) {
+          messages.push({
+            role: "function",
+            name: functionName,
+            content: JSON.stringify(functionResponse),
+          });
+        }
       }
 
       const secondResponse = await groq.chat.completions.create({

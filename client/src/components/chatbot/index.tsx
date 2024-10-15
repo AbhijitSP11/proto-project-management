@@ -3,13 +3,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send, ChevronLeft, Sparkles } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { useTheme } from 'next-themes';
 import { useGroqChatMutation } from '@/state/api';
 import { useAppDispatch, useAppSelector } from '@/app/redux';
 import { addMessageToChat } from '@/state/chatSlice';
 import ReactMarkdown, { Components } from 'react-markdown';
 import { customComponents, menuOptions } from '@/constants/markdown';
 import { Discuss } from 'react-loader-spinner';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 
 const ChatBot = () => {
   const dispatch = useAppDispatch();
@@ -48,7 +49,7 @@ const ChatBot = () => {
     if (currentSection === 'home') {
       return (
         <>
-          <div className="flex items-center gap-3 mb-4">
+          <div className="w-full flex items-center gap-3 mb-4">
             <div className="relative">
               <div className="absolute inset-0 bg-blue-200 dark:bg-blue-700 rounded-full animate-pulse"></div>
               <div className="relative p-2 bg-white dark:bg-dark-secondary rounded-full border-2 border-blue-500">
@@ -91,7 +92,7 @@ const ChatBot = () => {
           <Button
             key={index}
             variant="outline"
-            className="w-full text-left justify-start bg-white hover:bg-gray-100 text-gray-800 rounded-lg p-3 
+            className="w-full flex flex-wrap text-left justify-start hover:bg-gray-500 text-gray-800 rounded-lg p-3 
             dark:bg-dark-secondary dark:text-gray-50"
             onClick={() => {handleSendMessage(subOption)}}
           >
@@ -129,19 +130,29 @@ const ChatBot = () => {
                 <X className="h-5 w-5" />
               </Button>
             </div>
-            <div className="flex-1 overflow-y-auto p-4 bg-white dark:bg-dark-secondary dark:text-gray-50">
+            <div className="w-full flex-1 flex-wrap overflow-y-auto p-4 bg-white dark:bg-dark-secondary dark:text-gray-50">
               {renderContent()}
-              <div className="space-y-4 mt-4">
+              <div className="w-full space-y-4 mt-4">
                 {messages.map((message, index) => (
-                  <div key={index} className={`flex gap-2 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div key={index} className={`w-full flex gap-2 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                     {message.role === 'bot' && (
-                      <div className="w-min relative p-2 bg-white dark:bg-dark-secondary rounded-full border-2 border-blue-500">
+                      <div className="w-min relative size-8 p-2 bg-white dark:bg-dark-secondary rounded-full border-2 border-blue-500">
                         <Sparkles className="size-4 text-blue-500" />
                       </div>
                     )}
-                    <div className={`p-2 rounded-lg border border-gray-300 dark:border-gray-600 ${message.role === 'user' ? 
-                      'bg-blue-100 dark:bg-transparent ml-auto' : 'bg-gray-100 dark:bg-transparent'}`}>
-                       <ReactMarkdown components={customComponents}>{message.content}</ReactMarkdown>
+                    <div className={`w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 ${
+                        message.role === 'user' ? 'bg-blue-100 dark:bg-transparent ml-auto' : 'bg-gray-100 dark:bg-transparent'
+                      }`}>
+                         <div className="overflow-hidden w-[240px] md:w-[320px]">
+                          <ReactMarkdown 
+                            className="markdown prose w-full" 
+                            components={customComponents} 
+                            remarkPlugins={[remarkGfm]} 
+                            rehypePlugins={[rehypeRaw]}
+                          >
+                            {message.content}
+                          </ReactMarkdown>
+                        </div>
                     </div>
                   </div>
                 ))}
@@ -157,34 +168,40 @@ const ChatBot = () => {
                       ariaLabel="discuss-loading"
                       wrapperStyle={{}}
                       wrapperClass="discuss-wrapper"
+                      colors={['#3b82f6', '#3b82f6']} 
                     />
                   </div>
                 )}
               </div>
             </div>
             <div className="p-4 dark:bg-dark-secondary bg-gray-50 border-t rounded-b-xl">
-              <form className="flex items-center gap-2">
-                <Input 
-                  placeholder="Type your message..." 
-                  className="flex-grow bg-white dark:bg-dark-secondary dark:text-gray-50" 
-                  value={inputText}
-                  onChange={(e) => setInputText(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      handleSubmit(e);
-                    }
-                  }}
-                />
-                <Button 
-                  size="icon" 
-                  onClick={() => handleSendMessage(inputText)}
-                  className="bg-blue-700 hover:bg-blue-600 text-white p-2 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled={!inputText.trim()}
-                >
-                  <Send className="h-5 w-5" />
-                </Button>
-              </form>
+              <form className="flex items-center gap-2">
+                <textarea
+                  placeholder="Type your message. Press Shift + Enter key to enter a new line..."
+                  className="flex-grow bg-white dark:bg-dark-secondary dark:text-gray-50 
+                             border border-gray-500 dark:border-gray-700 p-2 rounded-md resize-none
+                             focus:outline-none"
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) { 
+                      e.preventDefault();
+                      handleSubmit(e);
+                    }
+                  }}
+                  rows={3} 
+                />
+                 <Button
+                    size="icon"
+                    onClick={() => handleSendMessage(inputText)}
+                    className="bg-blue-700 hover:bg-blue-600 text-white p-2 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={!inputText.trim()}
+                    >
+                    <Send className="h-5 w-5" />
+                    </Button>
+              </form>
             </div>
+
           </motion.div>
         )}
       </AnimatePresence>
