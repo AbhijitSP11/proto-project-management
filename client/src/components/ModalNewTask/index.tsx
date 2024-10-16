@@ -3,9 +3,6 @@ import {
   Calendar,
   ChevronLeft,
   ChevronRight,
-  Flag,
-  User,
-  Tag,
   X,
   ChevronDown,
 } from "lucide-react";
@@ -13,7 +10,7 @@ import dayjs from "dayjs";
 import { cn } from "@/lib/utils";
 import Select, { components } from "react-select";
 import { Priority, Status, Task, useCreateTasksMutation, useGetUsersQuery} from "@/state/api";
-import { PRIORITY_STYLES } from "@/constants/constants";
+import { priorityColorMap } from "@/constants/constants";
 
 interface Props {
   isOpen: boolean;
@@ -66,7 +63,7 @@ const UserOption = ({ data, ...props }: any) => (
 const PriorityOption = (props: any) => (
   <components.Option {...props}>
     <div className="flex items-center">
-      <div className={`w-3 h-3 rounded-full mr-2 ${PRIORITY_STYLES[props.data.value as keyof typeof PRIORITY_STYLES].split(' ')[0]}`} />
+      <div className={`w-3 h-3 rounded-full mr-2 ${priorityColorMap[props.data.value as keyof typeof priorityColorMap].split(' ')[0]}`} />
       {props.data.label}
     </div>
   </components.Option>
@@ -75,7 +72,7 @@ const PriorityOption = (props: any) => (
 const PrioritySingleValue = (props: any) => (
   <components.SingleValue {...props}>
     <div className="flex items-center">
-      <div className={`w-3 h-3 rounded-full mr-2 ${PRIORITY_STYLES[props.data.value as keyof typeof PRIORITY_STYLES].split(' ')[0]}`} />
+      <div className={`w-3 h-3 rounded-full mr-2 ${priorityColorMap[props.data.value as keyof typeof priorityColorMap].split(' ')[0]}`} />
       {props.data.label}
     </div>
   </components.SingleValue>

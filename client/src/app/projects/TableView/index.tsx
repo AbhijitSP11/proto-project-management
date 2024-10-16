@@ -2,12 +2,11 @@ import React from 'react'
 import { Priority, Status, useGetTasksQuery } from '@/state/api';
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { dataGridClassNames, dataGridSxStyles } from '@/utils/dataGridClassNames.utils';
-import { useAppSelector } from '@/app/redux';
-import { PRIORITY_STYLES, STATUS_STYLES } from '@/constants/constants';
 import { getInitials } from '@/utils/getInitials.utils';
 import { getColorForName } from '@/utils/getProfileColor.utils';
 import { useTheme } from "next-themes";
 import Spinner from "@/components/Spinner";
+import { priorityColorMap, statusColorMap } from '@/constants/constants';
 
 type Props = {
     id: string;
@@ -42,7 +41,7 @@ const TableView: React.FC<Props> = ({ id, setIsModalNewTaskOpen }) => {
             headerName: "Status",
             width: 130,
             renderCell: (params) => (
-                <span className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${STATUS_STYLES[params.value as Status] || 'bg-gray-100 text-gray-800'}`}>
+                <span className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${statusColorMap[params.value as Status] || 'bg-gray-100 text-gray-800'}`}>
                     {params.value}
                 </span>
             )
@@ -52,7 +51,7 @@ const TableView: React.FC<Props> = ({ id, setIsModalNewTaskOpen }) => {
             headerName: "Priority",
             width: 100,
             renderCell: (params) => (
-                <span className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${PRIORITY_STYLES[params.value as Priority] || 'bg-gray-100 text-gray-800'}`}>
+                <span className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${priorityColorMap[params.value as Priority] || 'bg-gray-100 text-gray-800'}`}>
                     {params.value}
                 </span>
             )
