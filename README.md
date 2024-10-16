@@ -63,8 +63,8 @@ npm run seed
 ```
 Configure environment variables:
 
-Server: Create a .env file and include settings like PORT, DATABASE_URL.
-Client: Create a .env.local file for client-side settings such as NEXT_PUBLIC_API_BASE_URL.
+Server: Create a ```.env``` file and include settings like ```PORT```, ```DATABASE_URL```.
+Client: Create a ```.env.local``` file for client-side settings such as ```NEXT_PUBLIC_API_BASE_URL```.
 
 ```npm run dev```
 
