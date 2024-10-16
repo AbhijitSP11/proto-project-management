@@ -44,28 +44,29 @@ Ensure the following are installed:
 ### Installation Steps
 1. Clone the repository:
    ```bash
-   git clone [repo_url]
+   git clone [[repo_url]](https://github.com/AbhijitSP11/proto-project-management.git)
    cd luno-project-management
 
 # Install client dependencies
+```bash
 cd client
 npm install
+```
 
 # Install server dependencies
-cd ../server
+```cd ../server
 npm install
-
-npx prisma generate
+```
+```npx prisma generate
 npx prisma migrate dev --name init
 npm run seed
-
+```
 Configure environment variables:
 
 Server: Create a .env file and include settings like PORT, DATABASE_URL.
 Client: Create a .env.local file for client-side settings such as NEXT_PUBLIC_API_BASE_URL.
 
-npm run dev
-
+```npm run dev```
 
 Additional Resources
 Groq AI Chatbot Documentation: Learn how the chatbot integration works.
