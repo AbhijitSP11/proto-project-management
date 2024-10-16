@@ -1,6 +1,6 @@
 # Luno - Project Management Application
 
-![Project Logo]([https://github.com/your-username/repository-name/blob/main/images/logo.png](https://github.com/AbhijitSP11/proto-project-management/blob/master/client/public/thumbnail.png))
+![Project Logo]([https://github.com/AbhijitSP11/proto-project-management/blob/master/client/public/thumbnail.png])
 
 Luno is a modern project management application that leverages **Groq AI** to assist users in managing tasks and queries through a seamless chatbot experience. This repository contains the source code and setup instructions for creating a comprehensive project management dashboard. The AI-powered chatbot enhances user experience by answering queries and providing insights in real-time.
 
