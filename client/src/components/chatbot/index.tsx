@@ -87,13 +87,13 @@ const ChatBot = () => {
     const section = menuOptions.find(option => option.id === currentSection);
     
     return (
-      <div className="space-y-3">
+      <div className="flex flex-col w-full space-y-3">
         {section && section.subOptions.map((subOption, index) => (
           <Button
             key={index}
             variant="outline"
-            className="w-full flex flex-wrap text-left justify-start hover:bg-gray-500 text-gray-800 rounded-lg p-3 
-            dark:bg-dark-secondary dark:text-gray-50"
+            className="flex text-left min-h-min border justify-start hover:bg-gray-100 text-gray-800 rounded-lg p-3 
+            dark:border-gray-500 dark:hover:bg-gray-700 dark:text-gray-50 break-words whitespace-normal"
             onClick={() => {handleSendMessage(subOption)}}
           >
             {subOption}

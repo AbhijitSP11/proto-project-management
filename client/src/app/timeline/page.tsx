@@ -59,7 +59,7 @@ const Timeline = () => {
       ]
 
     return (
-    <div className='max-w-full p-8'>
+    <div className='w-full md:w-[calc(100%-16rem)] p-8'>
         <header className='mb-4 flex items-center justify-between'>
           <Header name="Projects Timeline"/>
             <div className='relative inline-block w-64'>
