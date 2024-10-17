@@ -2,8 +2,8 @@ import React from 'react'
 import { Authenticator, ThemeProvider, View, useTheme } from '@aws-amplify/ui-react';
 import { Amplify } from 'aws-amplify';
 import "@aws-amplify/ui-react/styles.css";
-import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
+import StartServicesButton from '@/components/StartServicesButton';
 
 Amplify.configure({
     Auth: {
@@ -95,7 +95,7 @@ const formFields = {
             <div>
                 {!user && <h1 className="text-4xl font-semibold mb-6">Log in to your Account</h1>}
                 {user ? (
-                <div className="w-full">{children}</div>
+                <div className="w-full flex flex-col">{children} <StartServicesButton/></div>
                 ) : (
                 <motion.div
                     className="flex flex-col gap-4"
