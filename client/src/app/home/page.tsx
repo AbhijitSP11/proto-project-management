@@ -125,7 +125,7 @@ const HomePage = () => {
         <Header name={`${projects[0].name} Project Dashboard`}/>
       </div>
       
-      <div className="flex gap-2 rounded-lg">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-6 md:gap-4">
         {stats.map((stat, index) => (
           <DashboardStats
             key={index}

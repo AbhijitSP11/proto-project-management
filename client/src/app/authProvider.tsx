@@ -104,6 +104,7 @@ const formFields = {
                     transition={{ delay: 0.4, duration: 0.8 }}
                 >
                     {/* Amplify form fields will be rendered here */}
+                    <StartServicesButton/>
                 </motion.div>
                 )}
             </div>
