@@ -124,6 +124,55 @@ const ModalNewTask: React.FC<Props> = ({ isOpen, onClose, id = null  }) => {
     setCalendarVisible(false);
   };
 
+  const customStyles = {
+    control: (provided:any, state:any) => ({
+      ...provided,
+      backgroundColor: 'var(--select-bg)',
+      borderColor: 'var(--select-border)',
+      color: 'var(--select-text)',
+      '&:hover': {
+        borderColor: 'var(--select-border-hover)',
+      },
+    }),
+    menu: (provided:any) => ({
+      ...provided,
+      backgroundColor: 'var(--select-bg)',
+      boxShadow: '0 4px 6px -1px var(--select-shadow), 0 2px 4px -1px var(--select-shadow)',
+    }),
+    menuList: (provided:any) => ({
+      ...provided,
+      backgroundColor: 'var(--select-bg)',
+    }),
+    option: (provided:any, state:any) => ({
+      ...provided,
+      backgroundColor: state.isFocused ? 'var(--select-option-hover)' : 'var(--select-bg)',
+      color: 'var(--select-text)',
+      '&:active': {
+        backgroundColor: 'var(--select-option-active)',
+      },
+    }),
+    singleValue: (provided:any) => ({
+      ...provided,
+      color: 'var(--select-text)',
+    }),
+    multiValue: (provided:any) => ({
+      ...provided,
+      backgroundColor: 'var(--select-multi-bg)',
+    }),
+    multiValueLabel: (provided:any) => ({
+      ...provided,
+      color: 'var(--select-multi-text)',
+    }),
+    multiValueRemove: (provided:any) => ({
+      ...provided,
+      color: 'var(--select-multi-remove)',
+      ':hover': {
+        backgroundColor: 'var(--select-multi-remove-hover)',
+        color: 'var(--select-multi-remove-hover-text)',
+      },
+    }),
+  };
+
   const generateCalendarDays = () => {
     const startOfMonth = selectedMonth.startOf("month");
     const endOfMonth = selectedMonth.endOf("month");
@@ -160,15 +209,15 @@ const ModalNewTask: React.FC<Props> = ({ isOpen, onClose, id = null  }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="relative w-full max-w-2xl rounded-lg bg-white p-6 shadow-lg">
+      <div className="relative w-full max-w-2xl rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800">
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 text-gray-400 transition hover:text-gray-600"
+          className="absolute right-4 top-4 text-gray-400 transition hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100"
         >
           <X className="h-6 w-6" />
         </button>
 
-        <h2 className="mb-4 text-2xl font-bold">Create New Task</h2>
+        <h2 className="mb-4 text-2xl font-bold dark:text-white">Create New Task</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -177,7 +226,7 @@ const ModalNewTask: React.FC<Props> = ({ isOpen, onClose, id = null  }) => {
               placeholder="Task Title"
               value={taskData.title || ""}
               onChange={(e) => handleInputChange("title", e.target.value)}
-              className="w-full rounded-lg border border-gray-300 p-3 text-lg focus:border-blue-500 focus:ring focus:ring-blue-200"
+              className="w-full rounded-lg border border-gray-300 p-3 text-lg focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-300"
             />
           </div>
 
@@ -187,7 +236,7 @@ const ModalNewTask: React.FC<Props> = ({ isOpen, onClose, id = null  }) => {
               value={taskData.description || ""}
               onChange={(e) => handleInputChange("description", e.target.value)}
               rows={3}
-              className="w-full rounded-lg border border-gray-300 p-3 focus:border-blue-500 focus:ring focus:ring-blue-200"
+              className="w-full rounded-lg border border-gray-300 p-3 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-300"
             />
           </div>
 
@@ -195,21 +244,21 @@ const ModalNewTask: React.FC<Props> = ({ isOpen, onClose, id = null  }) => {
           <div className="flex space-x-4">
             <div className="relative flex-1">
               <div
-                className="flex cursor-pointer items-center justify-between rounded-lg bg-gray-100 p-3"
+                className="flex cursor-pointer items-center justify-between rounded-lg bg-gray-100 p-3 dark:bg-gray-700"
                 onClick={() => {
                   setDateType("start");
                   setCalendarVisible(!calendarVisible);
                 }}
               >
                 <div className="flex items-center">
-                  <Calendar className="h-5 w-5 text-gray-600" />
-                  <span className="ml-3 text-sm text-gray-700">
+                  <Calendar className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+                  <span className="ml-3 text-sm text-gray-700 dark:text-gray-200">
                     {taskData.startDate
                       ? `Start: ${dayjs(taskData.startDate).format("MMM D, YYYY")}`
                       : "Set start date"}
                   </span>
                 </div>
-                <ChevronDown className="h-4 w-4 text-gray-600" />
+                <ChevronDown className="h-4 w-4 text-gray-600 dark:text-gray-300" />
               </div>
             </div>
             <div className="relative flex-1">
@@ -233,21 +282,22 @@ const ModalNewTask: React.FC<Props> = ({ isOpen, onClose, id = null  }) => {
             </div>
           </div>
 
+       
           {calendarVisible && (
-            <div className="absolute z-10 mt-2 w-full rounded-lg border bg-white shadow-lg">
+            <div className="absolute z-10 mt-2 w-full rounded-lg border bg-white shadow-lg dark:border-gray-600 dark:bg-gray-800">
               <div className="p-4">
                 {/* Quick selections */}
                 <div className="mb-3 flex items-center justify-around">
                   <button
                     type="button"
-                    className="rounded-lg bg-blue-100 px-3 py-2 text-sm text-blue-700"
+                    className="rounded-lg bg-blue-100 px-3 py-2 text-sm text-blue-700 dark:bg-blue-800 dark:text-blue-200"
                     onClick={() => handleQuickSelection(0)}
                   >
                     Today
                   </button>
                   <button
                     type="button"
-                    className="rounded-lg bg-green-100 px-3 py-2 text-sm text-green-700"
+                    className="rounded-lg bg-green-100 px-3 py-2 text-sm text-green-700 dark:bg-green-800 dark:text-green-200"
                     onClick={() => handleQuickSelection(1)}
                   >
                     Tomorrow
@@ -260,16 +310,16 @@ const ModalNewTask: React.FC<Props> = ({ isOpen, onClose, id = null  }) => {
                     type="button"
                     onClick={() => setSelectedMonth(selectedMonth.subtract(1, "month"))}
                   >
-                    <ChevronLeft className="h-5 w-5 text-gray-600" />
+                    <ChevronLeft className="h-5 w-5 text-gray-600 dark:text-gray-300" />
                   </button>
-                  <span className="text-sm font-medium">
+                  <span className="text-sm font-medium dark:text-white">
                     {selectedMonth.format("MMMM YYYY")}
                   </span>
                   <button
                     type="button"
                     onClick={() => setSelectedMonth(selectedMonth.add(1, "month"))}
                   >
-                    <ChevronRight className="h-5 w-5 text-gray-600" />
+                    <ChevronRight className="h-5 w-5 text-gray-600 dark:text-gray-300" />
                   </button>
                 </div>
 
@@ -278,7 +328,7 @@ const ModalNewTask: React.FC<Props> = ({ isOpen, onClose, id = null  }) => {
                   {["S", "M", "T", "W", "T", "F", "S"].map((day, index) => (
                     <div
                       key={index}
-                      className="text-center text-xs font-medium text-gray-600"
+                      className="text-center text-xs font-medium text-gray-600 dark:text-gray-300"
                     >
                       {day}
                     </div>
@@ -298,8 +348,9 @@ const ModalNewTask: React.FC<Props> = ({ isOpen, onClose, id = null  }) => {
                             (dateType === "due" &&
                               taskData.dueDate &&
                               dayjs(taskData.dueDate).isSame(day, "day")),
-                          "text-gray-400": !day.isSame(selectedMonth, "month"),
-                          "hover:bg-blue-100": day.isSame(selectedMonth, "month"),
+                          "text-gray-400 dark:text-gray-500": !day.isSame(selectedMonth, "month"),
+                          "hover:bg-blue-100 dark:hover:bg-blue-700": day.isSame(selectedMonth, "month"),
+                          "dark:text-white": day.isSame(selectedMonth, "month"),
                         }
                       )}
                     >
@@ -311,9 +362,10 @@ const ModalNewTask: React.FC<Props> = ({ isOpen, onClose, id = null  }) => {
             </div>
           )}
 
+
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">Priority</label>
+              <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Priority</label>
               <Select
                 options={priorityOptions}
                 value={priorityOptions.find(option => option.value === taskData.priority)}
@@ -324,52 +376,55 @@ const ModalNewTask: React.FC<Props> = ({ isOpen, onClose, id = null  }) => {
                   Option: PriorityOption,
                   SingleValue: PrioritySingleValue,
                 }}
+                styles={customStyles}
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">Status</label>
-              <div className="rounded-md bg-gray-100 p-3 text-sm text-gray-700">
+              <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+              <div className="rounded-md bg-gray-100 p-3 text-sm text-gray-700 dark:bg-gray-700 dark:text-gray-200">
                 {Status.ToDo}
               </div>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">Assignee</label>
-            <Select
-              options={userOptions}
-              value={userOptions.find(option => option.value === taskData.assignedUserId)}
-              onChange={(selected) => handleInputChange("assignedUserId", selected?.value)}
-              className="react-select-container"
-              classNamePrefix="react-select"
-              placeholder="Select assignee"
-              components={{
-                Option: UserOption,
-                SingleValue: UserSingleValue,
-              }}
-            />
+            <div>
+              <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Assignee</label>
+              <Select
+                options={userOptions}
+                value={userOptions.find(option => option.value === taskData.assignedUserId)}
+                onChange={(selected) => handleInputChange("assignedUserId", selected?.value)}
+                className="react-select-container"
+                classNamePrefix="react-select"
+                placeholder="Select assignee"
+                components={{
+                  Option: UserOption,
+                  SingleValue: UserSingleValue,
+                }}
+                styles={customStyles}
+              />
+            </div>
+            
+            <div>
+              <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Author</label>
+              <Select
+                options={userOptions}
+                value={userOptions.find(option => option.value === taskData.authorUserId)}
+                onChange={(selected) => handleInputChange("authorUserId", selected?.value)}
+                className="react-select-container"
+                classNamePrefix="react-select"
+                placeholder="Select author"
+                components={{
+                  Option: UserOption,
+                  SingleValue: UserSingleValue,
+                }}
+                styles={customStyles}
+              />
+            </div>
           </div>
-          
-          <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">Author</label>
-            <Select
-              options={userOptions}
-              value={userOptions.find(option => option.value === taskData.authorUserId)}
-              onChange={(selected) => handleInputChange("authorUserId", selected?.value)}
-              className="react-select-container"
-              classNamePrefix="react-select"
-              placeholder="Select author"
-              components={{
-                Option: UserOption,
-                SingleValue: UserSingleValue,
-              }}
-            />
-          </div>
-        </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">Tags</label>
+            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Tags</label>
             <Select
               isMulti
               options={tagOptions}
@@ -378,6 +433,7 @@ const ModalNewTask: React.FC<Props> = ({ isOpen, onClose, id = null  }) => {
               className="react-select-container"
               classNamePrefix="react-select"
               placeholder="Select tags"
+              styles={customStyles}
             />
           </div>
 

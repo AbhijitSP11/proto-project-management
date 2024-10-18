@@ -91,6 +91,18 @@ body,
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --select-bg: #ffffff;
+    --select-border: #e2e8f0;
+    --select-border-hover: #cbd5e0;
+    --select-option-hover: #f7fafc;
+    --select-option-active: #e2e8f0;
+    --select-text: #1a202c;
+    --select-shadow: rgba(0, 0, 0, 0.1);
+    --select-multi-bg: #e2e8f0;
+    --select-multi-text: #1a202c;
+    --select-multi-remove: #718096;
+    --select-multi-remove-hover: #f56565;
+    --select-multi-remove-hover-text: #ffffff;
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -117,6 +129,18 @@ body,
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --select-bg: #2d3748;
+    --select-border: #4a5568;
+    --select-border-hover: #718096;
+    --select-option-hover: #4a5568;
+    --select-option-active: #2c5282;
+    --select-text: #e2e8f0;
+    --select-shadow: rgba(0, 0, 0, 0.3);
+    --select-multi-bg: #4a5568;
+    --select-multi-text: #e2e8f0;
+    --select-multi-remove: #a0aec0;
+    --select-multi-remove-hover: #f56565;
+    --select-multi-remove-hover-text: #1a202c;
   }
 }
 
