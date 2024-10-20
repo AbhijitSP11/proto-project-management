@@ -5,7 +5,7 @@
   "main": "index.js",
  "scripts": {
   "test": "echo \"Error: no test specified\" && exit 1",
-  "build": "rimraf dist && tsc",
+  "build": "prisma generate && prisma migrate deploy && rimraf dist && tsc",
   "start": "node dist/src/index.js",
   "dev": "concurrently \"tsc -w\" \"nodemon dist/src/index.js\"",
   "seed": "ts-node prisma/seed.ts",
