@@ -3,7 +3,6 @@ import { Authenticator, ThemeProvider, View, useTheme } from '@aws-amplify/ui-re
 import { Amplify } from 'aws-amplify';
 import "@aws-amplify/ui-react/styles.css";
 import { motion } from 'framer-motion';
-import StartServicesButton from '@/components/StartServicesButton';
 
 Amplify.configure({
     Auth: {
@@ -95,7 +94,7 @@ const formFields = {
             <div>
                 {!user && <h1 className="text-4xl font-semibold mb-6">Log in to your Account</h1>}
                 {user ? (
-                <div className="w-full flex flex-col">{children} <StartServicesButton/></div>
+                <div className="w-full flex flex-col">{children}</div>
                 ) : (
                 <motion.div
                     className="flex flex-col gap-4"
@@ -104,7 +103,6 @@ const formFields = {
                     transition={{ delay: 0.4, duration: 0.8 }}
                 >
                     {/* Amplify form fields will be rendered here */}
-                    <StartServicesButton/>
                 </motion.div>
                 )}
             </div>

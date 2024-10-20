@@ -30,7 +30,6 @@ import { useTheme } from "next-themes";
 import Spinner from "@/components/Spinner";
 import { BarChartIcon, CheckCircleIcon, ClockIcon, FlagIcon, Info, LucideIcon, PieChartIcon, UsersIcon } from "lucide-react";
 import { Tooltip as ReactToolTip} from 'react-tooltip';
-import StartServicesButton from "@/components/StartServicesButton";
 
 const HomePage = () => {
   const {
@@ -45,7 +44,7 @@ const HomePage = () => {
     const isDarkMode = theme === "dark";
 
   if (tasksLoading || isProjectsLoading) return <div><Spinner/></div>;
-  if (tasksError || !tasks || !projects) return <div>Error fetching data. Please start the service.<StartServicesButton/></div>;
+  if (tasksError || !tasks || !projects) return <div>Error fetching data. Please start the service.</div>;
 
   const priorityCount = tasks.reduce(
     (acc: Record<string, number>, task: Task) => {
