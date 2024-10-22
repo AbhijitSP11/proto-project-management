@@ -45,8 +45,8 @@ const Navbar = () => {
           <Menu className='h-6 w-6 dark:text-white'/>
         </button> )}
       </div>
-      <div className="relative flex h-min w-full md:w-1/2">
-        <Search/>
+      <div className="relative flex w-full md:w-1/2 lg:w-1/3">
+        <Search />
       </div>
 
       <div className='flex items-center'>

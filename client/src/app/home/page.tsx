@@ -116,87 +116,86 @@ const HomePage = () => {
   ];
 
   return (
-    <div className="container h-full w-[100%] bg-gray-100 bg-transparent p-8">
-      <div className="w-full flex items-center gap-2">
-        <span className="flex rounded-lg px-6 py-2 text-2xl mb-5 items-center justify-center bg-blue-500 text-white font-bold">
-          {projects[0].name[0]}
-        </span>
-        <Header name={`${projects[0].name} Project Dashboard`}/>
-      </div>
-      
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-6 md:gap-4">
-        {stats.map((stat, index) => (
-          <DashboardStats
-            key={index}
-            icon={stat.icon}
-            title={stat.title}
-            count={stat.count}
-            bgColor={stat.bgColor}
-            iconColor={stat.iconColor}
-          />
-        ))}
-      </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div className="rounded-lg bg-white p-4 shadow dark:bg-dark-secondary">
-          <h3 className="mb-4 text-lg font-semibold dark:text-white">
-            Task Priority Distribution
-          </h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={taskDistribution}>
-              <CartesianGrid
-                strokeDasharray="3 3"
-                stroke={chartColors.barGrid}
-              />
-              <XAxis dataKey="name" stroke={chartColors.text} />
-              <YAxis stroke={chartColors.text} />
-              <Tooltip
-                contentStyle={{
-                  width: "min-content",
-                  height: "min-content",
-                }}
-              />
-              <Legend />
-              <Bar dataKey="count" fill={chartColors.bar}  barSize={50} radius={[10, 10, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-        <div className="rounded-lg bg-white p-4 shadow dark:bg-dark-secondary">
-          <h3 className="mb-4 text-lg font-semibold dark:text-white">
-            Project Status
-          </h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie dataKey="count" data={projectStatus} fill="#82ca9d" label>
-                {projectStatus.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-        <div className="rounded-lg bg-white p-4 shadow dark:bg-dark-secondary md:col-span-2">
-          <h3 className="mb-4 text-lg font-semibold dark:text-white">
-            Tasks
-          </h3>
-          <div style={{ height: 400, width: "100%" }}>
-            <DataGrid
-              rows={tasks}
-              columns={taskColumns}
-              loading={tasksLoading}
-              getRowClassName={() => "data-grid-row"}
-              getCellClassName={() => "data-grid-cell"}
-              className={dataGridClassNames}
-              sx={dataGridSxStyles(isDarkMode)}
+    <div className="container h-full w-full bg-gray-100 bg-transparent p-4 sm:p-8">
+    {/* Header */}
+    <div className="w-full flex flex-col sm:flex-row items-start sm:items-center gap-2 mb-5">
+      <span className="flex rounded-lg px-4 py-2 sm:px-6 sm:py-3 text-xl sm:text-2xl items-center justify-center bg-blue-500 text-white font-bold">
+        {projects[0].name[0]}
+      </span>
+      <Header name={`${projects[0].name} Project Dashboard`} />
+    </div>
+    
+    {/* Stats Section */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      {stats.map((stat, index) => (
+        <DashboardStats
+          key={index}
+          icon={stat.icon}
+          title={stat.title}
+          count={stat.count}
+          bgColor={stat.bgColor}
+          iconColor={stat.iconColor}
+        />
+      ))}
+    </div>
+  
+    {/* Charts and Task Section */}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+      <div className="rounded-lg bg-white p-4 shadow dark:bg-dark-secondary">
+        <h3 className="mb-4 text-lg font-semibold dark:text-white">
+          Task Priority Distribution
+        </h3>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={taskDistribution}>
+            <CartesianGrid strokeDasharray="3 3" stroke={chartColors.barGrid} />
+            <XAxis dataKey="name" stroke={chartColors.text} />
+            <YAxis stroke={chartColors.text} />
+            <Tooltip contentStyle={{ width: "min-content", height: "min-content" }} />
+            <Legend />
+            <Bar
+              dataKey="count"
+              fill={chartColors.bar}
+              barSize={30}
+              radius={[10, 10, 0, 0]}
             />
-          </div>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+  
+      <div className="rounded-lg bg-white p-4 shadow dark:bg-dark-secondary">
+        <h3 className="mb-4 text-lg font-semibold dark:text-white">
+          Project Status
+        </h3>
+        <ResponsiveContainer width="100%" height={300}>
+          <PieChart>
+            <Pie dataKey="count" data={projectStatus} fill="#82ca9d" label>
+              {projectStatus.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+  
+      <div className="rounded-lg bg-white p-4 shadow dark:bg-dark-secondary md:col-span-2">
+        <h3 className="mb-4 text-lg font-semibold dark:text-white">Tasks</h3>
+        <div style={{ height: 400, width: "100%" }}>
+          <DataGrid
+            rows={tasks}
+            columns={taskColumns}
+            loading={tasksLoading}
+            getRowClassName={() => "data-grid-row"}
+            getCellClassName={() => "data-grid-cell"}
+            className={dataGridClassNames}
+            sx={dataGridSxStyles(isDarkMode)}
+          />
         </div>
       </div>
     </div>
+  </div>
+  
   );
 };
 
